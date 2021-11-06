@@ -5,16 +5,11 @@ import Login from "../../components/login";
 import NotFound from "../../components/notFound/NotFound";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
-
 export default function Routes() {
   return (
     <Switch>
-      <UnauthenticatedRoute exact path="/login">
-        <Login />
-      </UnauthenticatedRoute>
-      <AuthenticatedRoute exact path="/">
-        <Dashboard />
-      </AuthenticatedRoute>
+      <UnauthenticatedRoute exact path="/login" component={Login}/>
+      <AuthenticatedRoute exact path="/" component={Dashboard}/>
       <Route component={NotFound} />
     </Switch>
   );

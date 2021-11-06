@@ -1,19 +1,37 @@
 import React from "react";
-import { Route, Redirect, useLocation } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
+import Nav from "../../components/nav";
 import { useUser } from "../hooks/useUser";
 
-export default function AuthenticatedRoute({ children, ...rest }) {
-  const { pathname, search } = useLocation();
+export default function AuthenticatedRoute({ component: Component, ...rest }) {
+
   const { isAuthenticated } = useUser();
+
   return (
-    <Route {...rest}>
-      {isAuthenticated ? (
-        children
-      ) : (
-        <Redirect to={
-          `/login?redirect=${pathname}${search}`
-        } />
-      )}
-    </Route>
+    <Route
+      {...rest}
+      render={(props) => {
+        if (isAuthenticated) {
+          return (
+            <>
+              {" "}
+              <Nav />
+              <Component {...props} />
+            </>
+          );
+        } else {
+          return (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: {
+                  from: props.location,
+                },
+              }}
+            />
+          );
+        }
+      }}
+    />
   );
-}
+};

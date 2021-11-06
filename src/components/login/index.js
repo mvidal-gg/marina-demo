@@ -10,11 +10,11 @@ function Login() {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
+      setSubmitting(false);
       await login(values.email, values.password)
-      setSubmitting(false);
     } catch (err) {
-      setErrors({ password: err.message });
       setSubmitting(false);
+      setErrors({ password: err.message });
     }
   };
 
