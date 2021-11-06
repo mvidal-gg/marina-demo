@@ -9,9 +9,10 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     onLoad();
-  }, [user, isAuthenticated]);
+  }, []);
 
   async function onLoad() {
+    let isSubscribed = true
     try {
       await Auth.currentAuthenticatedUser().then((user) => {
         setUser(user);
@@ -20,6 +21,7 @@ export const UserProvider = ({ children }) => {
     } catch (e) {
       console.log(e);
     }
+    return () => isSubscribed = false
   }
 
   const login = (usernameOrEmail, password) =>
