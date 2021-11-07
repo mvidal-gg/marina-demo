@@ -34,8 +34,7 @@ function ForgotPassword(props) {
     try {
       setSubmitting(false);
       setUsername(values.username);
-      //await sendConfirmationCode(values.username);
-      console.log("confirm code enviado");
+      await sendConfirmationCode(values.username);
       setIsConfirmationSend(true);
     } catch (err) {
       setSubmitting(false);
@@ -49,8 +48,7 @@ function ForgotPassword(props) {
   ) => {
     try {
       setSubmitting(false);
-      //await setNewPassword(username, values.code, values.password);
-      console.log("password cambiado");
+      await setNewPassword(username, values.code, values.password);
       history.push("/login");
     } catch (err) {
       setSubmitting(false);
