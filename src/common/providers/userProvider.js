@@ -24,8 +24,8 @@ export const UserProvider = ({ children }) => {
     return () => isSubscribed = false
   }
 
-  const login = (usernameOrEmail, password) =>
-    Auth.signIn(usernameOrEmail, password)
+  const login = (email, password) =>
+    Auth.signIn(email, password)
       .then((user) => {
         setUser(user);
         setIsAuthenticated(true);
@@ -45,7 +45,19 @@ export const UserProvider = ({ children }) => {
       return data;
     });
 
-  const values = { user, isAuthenticated, setIsAuthenticated, login, logout };
+  const sendConfirmationCode = (email) => {
+    Auth.forgotPassword(email)
+      .then(data => console.log((data)))
+      .catch(err => console.log(err))
+  }
+
+  const setNewPassword = (email, code, new_password) => {
+    Auth.forgotPasswordSubmit(email, code, new_password)
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+  }
+
+  const values = { user, isAuthenticated, setIsAuthenticated, login, logout, sendConfirmationCode, setNewPassword };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
 };

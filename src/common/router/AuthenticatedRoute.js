@@ -12,13 +12,7 @@ export default function AuthenticatedRoute({ component: Component, ...rest }) {
       {...rest}
       render={(props) => {
         if (isAuthenticated) {
-          return (
-            <>
-              {" "}
-              <Nav />
-              <Component {...props} />
-            </>
-          );
+          return <Component {...props} />      
         } else {
           return (
             <Redirect

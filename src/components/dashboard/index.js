@@ -2,8 +2,10 @@ import { useUser } from "../../common/hooks/useUser";
 import { useHistory } from "react-router-dom";
 
 export default function Dashboard() {
-  const { logout } = useUser();
+  const { user, logout } = useUser();
   const history = useHistory();
+  console.log(user)
+
   async function handleLogout() {
     await logout();
     history.push("/login");
