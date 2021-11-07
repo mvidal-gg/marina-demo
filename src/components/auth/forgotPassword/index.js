@@ -20,7 +20,8 @@ const ForgotSubmitSchema = Yup.object().shape({
     .required(),
   confirm_password: Yup.string()
     .min(8)
-    .required()
+    .required('Password is required')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 
 function ForgotPassword(props) {
@@ -33,7 +34,7 @@ function ForgotPassword(props) {
     try {
       setSubmitting(false);
       setUsername(values.username);
-      await sendConfirmationCode(values.username);
+      //await sendConfirmationCode(values.username);
       console.log("confirm code enviado");
       setIsConfirmationSend(true);
     } catch (err) {
@@ -48,7 +49,7 @@ function ForgotPassword(props) {
   ) => {
     try {
       setSubmitting(false);
-      await setNewPassword(username, values.code, values.password);
+      //await setNewPassword(username, values.code, values.password);
       console.log("password cambiado");
       history.push("/login");
     } catch (err) {
