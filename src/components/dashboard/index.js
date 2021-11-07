@@ -1,10 +1,10 @@
 import { useUser } from "../../common/hooks/useUser";
 import { useHistory } from "react-router-dom";
+import { Button } from "@mui/material";
 
 export default function Dashboard() {
-  const { user, logout } = useUser();
+  const { logout } = useUser();
   const history = useHistory();
-  console.log(user)
 
   async function handleLogout() {
     await logout();
@@ -14,7 +14,12 @@ export default function Dashboard() {
   return (
     <>
       <h3> Dashboard component. Acceso privado</h3>
-      <button onClick={handleLogout}>Logout</button>
+      <Button
+        onClick={handleLogout}       
+        variant="contained"
+      >
+        Logout
+      </Button>
     </>
   );
 }
