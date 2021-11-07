@@ -47,14 +47,14 @@ export const UserProvider = ({ children }) => {
 
   const sendConfirmationCode = (email) => {
     Auth.forgotPassword(email)
-      .then(data => console.log((data)))
+      .then(data => console.log(data))
       .catch(err => console.log(err))
   }
 
   const setNewPassword = (email, code, new_password) => {
     Auth.forgotPasswordSubmit(email, code, new_password)
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
+    .then(data => data)
+    .catch(err => err);
   }
 
   const values = { user, isAuthenticated, setIsAuthenticated, login, logout, sendConfirmationCode, setNewPassword };

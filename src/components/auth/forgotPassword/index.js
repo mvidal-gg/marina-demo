@@ -2,12 +2,28 @@ import React, { useState } from "react";
 import { useUser } from "../../../common/hooks/useUser";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
 
 const initialFormValues = { username: "" };
-const initialFormForgotSubmitValues = { code: "", username: "", password: "" };
+const initialFormForgotSubmitValues = {
+  code: "",
+  password: "",
+  confirm_password: "",
+};
+
+const ForgotSubmitSchema = Yup.object().shape({
+  code: Yup.string()
+    .min(6)
+    .required(),
+  password: Yup.string()
+    .min(8)
+    .required(),
+  confirm_password: Yup.string()
+    .min(8)
+    .required()
+})
 
 function ForgotPassword(props) {
-  
   const { sendConfirmationCode, setNewPassword } = useUser();
   const [isConfirmationSend, setIsConfirmationSend] = useState(false);
   const [username, setUsername] = useState(null);
@@ -16,7 +32,7 @@ function ForgotPassword(props) {
   const handleForgotPassword = async (values, { setSubmitting, setErrors }) => {
     try {
       setSubmitting(false);
-      setUsername(values.username)
+      setUsername(values.username);
       await sendConfirmationCode(values.username);
       console.log("confirm code enviado");
       setIsConfirmationSend(true);
@@ -32,7 +48,6 @@ function ForgotPassword(props) {
   ) => {
     try {
       setSubmitting(false);
-      console.log(values.code, username, values.password)
       await setNewPassword(username, values.code, values.password);
       console.log("password cambiado");
       history.push("/login");
@@ -74,6 +89,7 @@ function ForgotPassword(props) {
         <Formik
           initialValues={initialFormForgotSubmitValues}
           onSubmit={handleForgotPasswordSubmit}
+          validationSchema={ForgotSubmitSchema}
         >
           {({ isSubmitting, values, isValid }) => (
             <Form>
@@ -81,6 +97,8 @@ function ForgotPassword(props) {
               <ErrorMessage name="code" component="div" />
               <Field type="password" name="password" />
               <ErrorMessage name="password" component="div" />
+              <Field type="password" name="confirm_password" />
+              <ErrorMessage name="confirm_password" component="div" />
               <button type="submit" disabled={isSubmitting || !isValid}>
                 Aceptar
               </button>
