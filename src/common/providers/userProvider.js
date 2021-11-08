@@ -6,6 +6,7 @@ export const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     onLoad();
@@ -15,10 +16,12 @@ export const UserProvider = ({ children }) => {
     let isSubscribed = true
     try {
       await Auth.currentAuthenticatedUser().then((user) => {
+        setIsLoading(false)
         setUser(user);
         setIsAuthenticated(true);
       });
     } catch (e) {
+      setIsLoading(false)
       console.log(e);
     }
     return () => isSubscribed = false
@@ -57,7 +60,7 @@ export const UserProvider = ({ children }) => {
     .catch(err => err);
   }
 
-  const values = { user, isAuthenticated, setIsAuthenticated, login, logout, sendConfirmationCode, setNewPassword };
+  const values = { user, isAuthenticated, isLoading, setIsAuthenticated, login, logout, sendConfirmationCode, setNewPassword };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
 };

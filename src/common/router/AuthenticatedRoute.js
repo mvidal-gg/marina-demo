@@ -4,12 +4,15 @@ import { useUser } from "../hooks/useUser";
 
 export default function AuthenticatedRoute({ component: Component, ...rest }) {
 
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, isLoading } = useUser();
 
   return (
     <Route
       {...rest}
       render={(props) => {
+        if(isLoading) {
+          return <div>Loading...</div>
+        }
         if (isAuthenticated) {
           return <Component {...props} />      
         } else {

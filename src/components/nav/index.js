@@ -12,12 +12,16 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useUser } from "../../common/hooks/useUser";
+import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
+import { useLocation } from "react-router";
 
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const location = useLocation();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -25,18 +29,25 @@ function ResponsiveDrawer(props) {
 
   const { isAuthenticated } = useUser();
 
+  let CustomListItem = ({ to, primary }) => (
+    <ListItem
+      button
+      component={Link}
+      to={to}
+      selected={to === location.pathname}
+    >
+      <ListItemText primary={primary} />
+    </ListItem>
+  );
+
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        {["Consumos", "Históricos", "Usuarios", "Puntos de venta"].map(
-          (text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-            </ListItem>
-          )
-        )}
+        <CustomListItem to="/consumptions" primary="Consumos" />
+        <CustomListItem to="/users" primary="Usuarios" />
+        <CustomListItem to="/sale-points" primary="Puntos de venta" />
       </List>
     </div>
   );
@@ -69,7 +80,7 @@ function ResponsiveDrawer(props) {
             </IconButton>
           )}
           <Typography variant="h6" noWrap component="div">
-            Marina Demo
+            <Link to="/">Marina Demo</Link>
           </Typography>
         </Toolbar>
       </AppBar>

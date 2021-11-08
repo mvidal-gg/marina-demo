@@ -6,12 +6,15 @@ export default function UnauthenticatedRoute({
   component: Component,
   ...rest
 }) {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, isLoading } = useUser();
 
   return (
     <Route
       {...rest}
       render={(props) => {
+        if(isLoading) {
+          return <div>Loading...</div>
+        }
         if (!isAuthenticated) {
           return (
             <>
