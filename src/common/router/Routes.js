@@ -10,6 +10,7 @@ import Users from "../../components/users";
 import Consumptions from "../../components/consumptions";
 import SalePoints from "../../components/salePoints";
 import NewUser from "../../components/users/newUser";
+import NewConsumption from "../../components/consumptions/newConsumption";
 
 export default function Routes() {
   return (
@@ -18,6 +19,7 @@ export default function Routes() {
       <UnauthenticatedRoute exact path="/forgot-password" component={ForgotPassword}/>
       <AuthenticatedRoute exact path="/" component={Dashboard}/>
       <AuthenticatedRoute exact path="/consumptions" component={Consumptions}/>
+      <AuthenticatedRoute exact path="/consumptions/new" component={NewConsumption}/>
       <AuthenticatedRoute exact path="/users" component={Users}/>
       <AuthenticatedRoute exact path="/users/new" component={NewUser}/>
       <AuthenticatedRoute exact path="/sale-points" component={SalePoints}/>

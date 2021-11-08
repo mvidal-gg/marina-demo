@@ -16,13 +16,13 @@ export const UserProvider = ({ children }) => {
     let isSubscribed = true
     try {
       await Auth.currentAuthenticatedUser().then((user) => {
-        setIsLoading(false)
         setUser(user);
         setIsAuthenticated(true);
+        setIsLoading(false)
       });
     } catch (e) {
-      setIsLoading(false)
       console.log(e);
+      setIsLoading(false)
     }
     return () => isSubscribed = false
   }
