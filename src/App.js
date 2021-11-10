@@ -2,7 +2,7 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import "./App.css";
 import Routes from "./common/router/Routes";
-import Main from "./components/main";
+import Main from "./components/common/main";
 import Nav from "./components/nav";
 
 function App() {
