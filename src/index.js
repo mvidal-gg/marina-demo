@@ -22,7 +22,7 @@ ReactDOM.render(
   <UserProvider>
     <ThemeProvider theme={marinaTheme}>
       <Router>
-        <App />
+          <App />
       </Router>
     </ThemeProvider>
   </UserProvider>,
