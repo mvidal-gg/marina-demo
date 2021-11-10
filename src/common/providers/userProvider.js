@@ -36,7 +36,7 @@ export const UserProvider = ({ children }) => {
       })
       .catch((err) => {
         if (err.code === "UserNotFoundException") {
-          err.message = "Invalid username or password";
+          err.message = "Correo y/o contraseña inválidos";
         }
         throw err;
       });

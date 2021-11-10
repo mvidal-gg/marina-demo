@@ -2,6 +2,8 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "../../../common/hooks/useUser";
 import { Link } from "react-router-dom";
+import { Button, TextField } from "@mui/material";
+import { Box } from "@mui/system";
 
 const initialFormValues = { email: "", password: "" };
 
@@ -22,17 +24,45 @@ function Login() {
     <>
       <h3>Introduce tu contraseña para iniciar sesión</h3>
       <Formik initialValues={initialFormValues} onSubmit={handleSubmit}>
-        {({ isSubmitting, values, isValid }) => (
-          <Form>
-            <Field type="email" name="email" />
+        {({ handleChange, values, isSubmitting, isValid }) => (
+          <Box
+            component={Form}
+            sx={{
+              "& .MuiTextField-root": { m: 1, width: "100" },
+            }}
+            autoComplete="off"
+          >
+            <Field
+              as={TextField}
+              type="email"
+              name="email"
+              onChange={handleChange}
+              value={values.email}
+              fullWidth
+              autoComplete="on"
+              size="small"
+            />
             <ErrorMessage name="email" component="div" />
-            <Field type="password" name="password" />
+            <Field
+              as={TextField}
+              type="password"
+              name="password"
+              onChange={handleChange}
+              value={values.password}
+              fullWidth
+              autoComplete="on"
+              size="small"
+            />{" "}
             <ErrorMessage name="password" component="div" />
-            <button type="submit" disabled={isSubmitting || !isValid}>
-              Continuar
-            </button>
             <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
-          </Form>
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={isSubmitting || !isValid}
+            >
+              Continuar
+            </Button>
+          </Box>
         )}
       </Formik>
     </>
