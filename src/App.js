@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "./App.css";
 import Routes from "./common/router/Routes";
 import Main from "./components/common/main";
-import Nav from "./components/nav";
+import Nav from "./components/common/nav";
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);

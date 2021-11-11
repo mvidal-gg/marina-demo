@@ -11,10 +11,9 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { useUser } from "../../common/hooks/useUser";
 import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
 import { useLocation } from "react-router";
+import { useUser } from "../../../common/hooks/useUser";
 
 const drawerWidth = 240;
 
