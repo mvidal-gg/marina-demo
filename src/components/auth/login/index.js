@@ -21,7 +21,7 @@ function Login() {
       setSubmitting(false);
       setEmail(values.email);
       setPassword(values.password);
-      await login(email, password);
+      await login(values.email, values.password);
     } catch (err) {
       if (err.code === "UserNotConfirmedException") {
         setIsUserValidated(false);
