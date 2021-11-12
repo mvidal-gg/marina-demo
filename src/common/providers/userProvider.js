@@ -7,57 +7,56 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userGroup, setUserGroup] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     onLoad();
   }, []);
 
   async function onLoad() {
-    let isSubscribed = true
+    let isSubscribed = true;
     try {
       await Auth.currentAuthenticatedUser().then((user) => {
         setUser(user);
         setUserGroup(user.signInUserSession.idToken.payload["cognito:groups"]);
         setIsAuthenticated(true);
-        setIsLoading(false)
+        setIsLoading(false);
       });
     } catch (e) {
       console.log(e);
-      setIsLoading(false)
+      setIsLoading(false);
     }
-    return () => isSubscribed = false
+    return () => (isSubscribed = false);
   }
 
-
-  const confirmSignUp = (username, code ) =>
+  const confirmSignUp = (username, code) =>
     Auth.confirmSignUp(username, code)
       .then((user) => {
-        console.log('Confirmed user =>' + user)
+        console.log("Confirmed user =>" + user);
         return true;
       })
       .catch((err) => {
-        console.log('error confirming user:', err)
+        console.log("error confirming user:", err);
         return false;
-      }
-  );
+      });
 
   const signUp = (username, password, phone_number, email) =>
-    Auth.signUp({username, password,
+    Auth.signUp({
+      username,
+      password,
       attributes: {
-          email,       
-          phone_number
-      }
+        email,
+        phone_number,
+      },
     })
       .then((user) => {
-        console.log('created user =>' + user)
+        console.log("created user =>" + user);
         return true;
       })
       .catch((err) => {
-        console.log('error signing up:', err)
+        console.log("error signing up:", err);
         return false;
-      }
-   );
+      });
 
   const login = (email, password) =>
     Auth.signIn(email, password)
@@ -88,17 +87,29 @@ export const UserProvider = ({ children }) => {
 
   const sendConfirmationCode = (email) => {
     Auth.forgotPassword(email)
-      .then(data => console.log(data))
-      .catch(err => console.log(err))
-  }
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+  };
 
   const setNewPassword = (email, code, new_password) => {
     Auth.forgotPasswordSubmit(email, code, new_password)
-    .then(data => data)
-    .catch(err => err);
-  }
+      .then((data) => data)
+      .catch((err) => err);
+  };
 
-  const values = { user, isAuthenticated, isLoading, userGroup, setIsAuthenticated, confirmSignUp, signUp, login, logout, sendConfirmationCode, setNewPassword };
+  const values = {
+    user,
+    isAuthenticated,
+    isLoading,
+    userGroup,
+    setIsAuthenticated,
+    confirmSignUp,
+    signUp,
+    login,
+    logout,
+    sendConfirmationCode,
+    setNewPassword,
+  };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
 };

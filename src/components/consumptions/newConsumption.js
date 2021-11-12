@@ -6,6 +6,7 @@ import DatePicker from "../common/forms/datepicker";
 import { Box } from "@mui/system";
 import { Button, TextField } from "@mui/material";
 import * as Yup from "yup";
+import { useSnackbar } from "notistack";
 
 const initialFormValues = {
   card_number: "",
@@ -15,6 +16,7 @@ const initialFormValues = {
 export default function NewConsumption() {
   const [cardNumber, setCardNumber] = useState("");
   const [error, setError] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const { search } = useLocation();
   const qs = queryString.parse(search);
@@ -38,15 +40,17 @@ export default function NewConsumption() {
     alert(JSON.stringify(values));
   };
 
+  error &&
+    enqueueSnackbar(
+      "Ha ocurrido un error con el lector de tarjetas. Introduce el código manualmente.",
+      {
+        variant: "error",
+      }
+    );
+
   return (
     <>
       <h3> NewConsumption component. Acceso privado</h3>
-      {error && (
-        <p>
-          Ha ocurrido un error con el lector de tarjetas. Introduce el código
-          manualmente.
-        </p>
-      )}
       <Formik
         initialValues={initialFormValues}
         onSubmit={handleSubmit}

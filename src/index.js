@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Amplify } from "aws-amplify";
 import config from "./aws-exports";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { SnackbarProvider } from "notistack";
 
 Amplify.configure(config);
 
@@ -21,9 +22,11 @@ const marinaTheme = createTheme({
 ReactDOM.render(
   <UserProvider>
     <ThemeProvider theme={marinaTheme}>
-      <Router>
+      <SnackbarProvider maxSnack={3} hideIconVariant>
+        <Router>
           <App />
-      </Router>
+        </Router>
+      </SnackbarProvider>
     </ThemeProvider>
   </UserProvider>,
   document.getElementById("root")

@@ -4,23 +4,24 @@ import { useUser } from "../../../common/hooks/useUser";
 import { Link } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { useHistory } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const initialFormValues = { email: "", password: "" };
 const initialFormVerifyValues = { code: "" };
 
 function Login() {
-  const { login, confirmSignUp} = useUser();
-  const [ email, setEmail ] = useState("");
+  const { login, confirmSignUp } = useUser();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isUserValidated, setIsUserValidated] = useState(true);
-  const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       setSubmitting(false);
       setEmail(values.email);
-      await login(values.email, values.password);
-      console.log("usuario logeado");
+      setPassword(values.password);
+      await login(email, password);
     } catch (err) {
       if (err.code === "UserNotConfirmedException") {
         setIsUserValidated(false);
@@ -35,8 +36,10 @@ function Login() {
     try {
       setSubmitting(false);
       await confirmSignUp(email, values.code);
-      console.log("usuario verificado");
-      history.push("/");
+      enqueueSnackbar("Usuario verificado", {
+        variant: "success",
+      });
+      await login(email, password);
     } catch (err) {
       setSubmitting(false);
       setErrors({ code: err.message });
@@ -98,7 +101,10 @@ function Login() {
           Introduce tu código de verificación que has recibido por correo para
           iniciar sesión
         </h3>
-        <Formik initialValues={initialFormVerifyValues} onSubmit={handleVerifySubmit}>
+        <Formik
+          initialValues={initialFormVerifyValues}
+          onSubmit={handleVerifySubmit}
+        >
           {({ handleChange, values, isSubmitting, isValid }) => (
             <Box
               component={Form}
