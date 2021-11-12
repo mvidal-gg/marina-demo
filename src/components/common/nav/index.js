@@ -26,17 +26,20 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, userGroup} = useUser();
 
-  let CustomListItem = ({ to, primary }) => (
-    <ListItem
-      button
-      component={Link}
-      to={to}
-      selected={to === location.pathname}
-    >
-      <ListItemText primary={primary} />
-    </ListItem>
+  console.log("userGroup ->" + userGroup);
+ 
+ 
+  let CustomListItem = ({ to, primary }) =>(
+      <ListItem
+        button
+        component={Link}
+        to={to}
+        selected={to === location.pathname}
+      >
+        <ListItemText primary={primary} />
+      </ListItem>
   );
 
   const drawer = (
@@ -44,9 +47,9 @@ function ResponsiveDrawer(props) {
       <Toolbar />
       <Divider />
       <List>
-        <CustomListItem to="/consumptions" primary="Consumos" />
+        {(userGroup == 'marina') && (<CustomListItem to="/consumptions" primary="Consumos" />)}
         <CustomListItem to="/users" primary="Usuarios" />
-        <CustomListItem to="/sale-points" primary="Puntos de venta" />
+        <CustomListItem to="/sale-points" primary="Puntos de venta"/>
       </List>
     </div>
   );
