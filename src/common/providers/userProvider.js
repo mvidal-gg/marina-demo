@@ -5,7 +5,7 @@ export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [userGroup, setUserGroup] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,8 +18,8 @@ export const UserProvider = ({ children }) => {
     try {
       await Auth.currentAuthenticatedUser().then((user) => {
         setUser(user);
-        setUserGroup(user.signInUserSession.idToken.payload["cognito:groups"]);
         setIsAuthenticated(true);
+        setUserRole(user.signInUserSession.idToken.payload["cognito:groups"][0]);
         setIsLoading(false);
       });
     } catch (e) {
@@ -63,7 +63,7 @@ export const UserProvider = ({ children }) => {
       .then((user) => {
         setUser(user);
         console.log(user);
-        setUserGroup(user.signInUserSession.idToken.payload["cognito:groups"]);
+        setUserRole(user.signInUserSession.idToken.payload["cognito:groups"][0]);
         setIsAuthenticated(true);
         return user;
       })
@@ -79,9 +79,9 @@ export const UserProvider = ({ children }) => {
 
   const logout = () =>
     Auth.signOut().then((data) => {
-      setUser(null);
-      setUserGroup(null);
       setIsAuthenticated(false);
+      setUser(null);
+      setUserRole(null);
       return data;
     });
 
@@ -101,7 +101,7 @@ export const UserProvider = ({ children }) => {
     user,
     isAuthenticated,
     isLoading,
-    userGroup,
+    userRole,
     setIsAuthenticated,
     confirmSignUp,
     signUp,

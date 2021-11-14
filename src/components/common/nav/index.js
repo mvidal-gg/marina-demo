@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import { useUser } from "../../../common/hooks/useUser";
+import { Role } from "../../../common/roles/role";
 
 const drawerWidth = 240;
 
@@ -26,10 +27,7 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const { isAuthenticated, userGroup} = useUser();
-
-  console.log("userGroup ->" + userGroup);
- 
+  const { isAuthenticated, userRole} = useUser();
  
   let CustomListItem = ({ to, primary }) =>(
       <ListItem
@@ -47,7 +45,7 @@ function ResponsiveDrawer(props) {
       <Toolbar />
       <Divider />
       <List>
-        {(userGroup == 'marina') && (<CustomListItem to="/consumptions" primary="Consumos" />)}
+        {(userRole == Role.Marina) && (<CustomListItem to="/consumptions" primary="Consumos" />)}
         <CustomListItem to="/users" primary="Usuarios" />
         <CustomListItem to="/sale-points" primary="Puntos de venta"/>
       </List>
