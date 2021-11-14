@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import { useUser } from "../../../common/hooks/useUser";
 import { Role } from "../../../common/roles/role";
+import withRole from "../../../common/roles/withRole";
 
 const drawerWidth = 240;
 
@@ -27,27 +28,29 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const { isAuthenticated, userRole} = useUser();
- 
-  let CustomListItem = ({ to, primary }) =>(
-      <ListItem
-        button
-        component={Link}
-        to={to}
-        selected={to === location.pathname}
-      >
-        <ListItemText primary={primary} />
-      </ListItem>
+  const { isAuthenticated, userRole } = useUser();
+
+  let CustomListItem = ({ to, primary }) => (
+    <ListItem
+      button
+      component={Link}
+      to={to}
+      selected={to === location.pathname}
+    >
+      <ListItemText primary={primary} />
+    </ListItem>
   );
+
+  const RestrictedUsersButton = withRole([Role.Marina])(CustomListItem);
 
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        {(userRole == Role.Marina) && (<CustomListItem to="/consumptions" primary="Consumos" />)}
-        <CustomListItem to="/users" primary="Usuarios" />
-        <CustomListItem to="/sale-points" primary="Puntos de venta"/>
+        <CustomListItem to="/consumptions" primary="Consumos" />
+        <RestrictedUsersButton to="/users" primary="Usuarios" />
+        <CustomListItem to="/sale-points" primary="Puntos de venta" />
       </List>
     </div>
   );
