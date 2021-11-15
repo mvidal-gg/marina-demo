@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
@@ -8,6 +9,7 @@ export default function AuthenticatedRoute({
   ...rest
 }) {
   const { isAuthenticated, userRole, isLoading } = useUser();
+  const { enqueueSnackbar } = useSnackbar();
 
   //user not cheked yet
   if (isLoading) {
@@ -32,6 +34,9 @@ export default function AuthenticatedRoute({
         }
         //if roles passed to route and user has none of them, redirect to dashboard
         if (roles && roles.indexOf(userRole) === -1) {
+          enqueueSnackbar("No tienes permisos para acceder esta vista", {
+            variant: "error",
+          });
           return (
             <Redirect
               to={{

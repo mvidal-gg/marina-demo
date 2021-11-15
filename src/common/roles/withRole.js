@@ -2,7 +2,7 @@ import { useUser } from "../hooks/useUser";
 
 const withRole = (roles) => (Component) => (props) => {
   const { userRole } = useUser();
-  if (userRole.match(roles)) {
+  if (userRole && userRole.match(roles)) {
     return <Component {...props} />;
   }
   return null;

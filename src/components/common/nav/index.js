@@ -42,7 +42,7 @@ function ResponsiveDrawer(props) {
   );
 
   const RestrictedUsersButton = withRole([Role.Marina])(CustomListItem);
-
+  
   const drawer = (
     <div>
       <Toolbar />
