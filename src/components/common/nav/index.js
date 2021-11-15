@@ -16,41 +16,54 @@ import { useLocation } from "react-router";
 import { useUser } from "../../../common/hooks/useUser";
 import { Role } from "../../../common/roles/role";
 import withRole from "../../../common/roles/withRole";
+import { useHistory } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const drawerWidth = 240;
 
-function ResponsiveDrawer(props) {
+export default function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const location = useLocation();
+  const history = useHistory();
+  const { logout } = useUser();
+  const { isAuthenticated } = useUser();
+
+  async function handleLogout() {
+    await logout();
+    history.push("/login");
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const { isAuthenticated } = useUser();
-
-  let CustomListItem = ({ to, primary }) => (
+  let CustomListItem = ({ to, text }) => (
     <ListItem
       button
       component={Link}
       to={to}
       selected={to === location.pathname}
     >
-      <ListItemText primary={primary} />
+      <ListItemText primary={text} />
     </ListItem>
   );
 
   const RestrictedUsersButton = withRole([Role.Marina])(CustomListItem);
-  
+
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List onClick={handleDrawerToggle}>
-        <CustomListItem to="/consumptions" primary="Consumos" />
-        <RestrictedUsersButton to="/users" primary="Usuarios" />
-        <CustomListItem to="/sale-points" primary="Puntos de venta" />
+        <CustomListItem to="/consumptions" text="Consumos" />
+        <RestrictedUsersButton to="/users" text="Usuarios" />
+        <CustomListItem to="/sale-points" text="Puntos de venta" />
+        <Box m={2}>
+          <Button onClick={handleLogout} variant="contained">
+            Logout
+          </Button>
+        </Box>
       </List>
     </div>
   );
@@ -125,5 +138,3 @@ function ResponsiveDrawer(props) {
     </>
   );
 }
-
-export default ResponsiveDrawer;
