@@ -40,13 +40,14 @@ export const UserProvider = ({ children }) => {
         return false;
       });
 
-  const signUp = (username, password, phone_number, email) =>
+  const signUp = (username, password, phone_number, email, pointOfSale) =>
     Auth.signUp({
       username,
       password,
       attributes: {
         email,
         phone_number,
+        'custom:point-of-sale' : pointOfSale
       },
     })
       .then((user) => {

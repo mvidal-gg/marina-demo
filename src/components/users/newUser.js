@@ -1,17 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "../../common/hooks/useUser";
-import { Button, TextField } from "@mui/material";
+import { Button, MenuItem, Select, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 
-const initialFormValues = { email: "", password: "", phone_number: "" };
+const initialFormValues = {
+  email: "",
+  password: "",
+  phone_number: "",
+  point_of_sale: "",
+};
 
 export default function NewUser() {
-  const { signUp } = useUser();
+  const { signUp, user } = useUser();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
+  const [pointOfSale, setPointOfSale] = useState("");
+  const [pointsOfSale, setPointsOfSale] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    console.log("jwtToken ->" + user.signInUserSession.accessToken.jwtToken);
+    return fetch('https://k1c8hx53c3.execute-api.us-east-2.amazonaws.com/beta/tarjetas-club/point-of-sale?scope=internal',
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': user.signInUserSession.accessToken.jwtToken,
+        }
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setPointsOfSale(pointsOfSale => [...pointsOfSale, ...data['pointsOfSale']]));
+  };
+
+  const handleSelectChange = (event) => {
+    setPointOfSale(event.target.value);
+  };
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
@@ -20,12 +49,13 @@ export default function NewUser() {
         values.email,
         values.password,
         values.phone_number,
-        values.email
+        values.email,
+        pointOfSale
       );
       enqueueSnackbar("Usuario creado correctamente", {
         variant: "success",
       });
-      history.push("/users")
+      history.push("/users");
     } catch (err) {
       setSubmitting(false);
       setErrors({ password: err.message });
@@ -79,6 +109,22 @@ export default function NewUser() {
               autoComplete="on"
               size="small"
             />
+            <Field
+              as={Select}
+              label="Punto de venta"
+              labelId="point-of-sale"
+              id="point-of-sale"
+              value={pointOfSale}
+              fullWidth
+              onChange={handleSelectChange}
+              size="small"
+            >
+              {
+                pointsOfSale.map((element, index) => (
+                  <MenuItem key={element.id} value={element.id}>{element.label}</MenuItem>    
+                ))
+              }
+            </Field>
             <Button
               variant="contained"
               type="submit"
