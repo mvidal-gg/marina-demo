@@ -28,7 +28,7 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const { isAuthenticated, userRole } = useUser();
+  const { isAuthenticated } = useUser();
 
   let CustomListItem = ({ to, primary }) => (
     <ListItem
@@ -47,7 +47,7 @@ function ResponsiveDrawer(props) {
     <div>
       <Toolbar />
       <Divider />
-      <List>
+      <List onClick={handleDrawerToggle}>
         <CustomListItem to="/consumptions" primary="Consumos" />
         <RestrictedUsersButton to="/users" primary="Usuarios" />
         <CustomListItem to="/sale-points" primary="Puntos de venta" />
@@ -57,18 +57,13 @@ function ResponsiveDrawer(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-  const appBarStyles = isAuthenticated
-    ? `calc(100% - ${drawerWidth}px)`
-    : "100%";
+
   return (
     <>
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{
-          width: { sm: appBarStyles },
-          ml: { sm: `${drawerWidth}px` },
-        }}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
           {isAuthenticated && (
