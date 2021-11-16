@@ -24,19 +24,30 @@ export default function NewUser() {
     fetchData();
   }, []);
 
-  const fetchData = () => {
-    console.log("jwtToken ->" + user.signInUserSession.accessToken.jwtToken);
-    return fetch('https://k1c8hx53c3.execute-api.us-east-2.amazonaws.com/beta/tarjetas-club/point-of-sale?scope=internal',
-      {
-        method: 'GET',
-        headers: {
-          'Authorization': user.signInUserSession.accessToken.jwtToken,
+  async function fetchData() {
+    let isSubscribed = true;
+    try {
+      await fetch(
+        "https://k1c8hx53c3.execute-api.us-east-2.amazonaws.com/beta/tarjetas-club/point-of-sale?scope=internal",
+        {
+          method: "GET",
+          headers: {
+            Authorization: user.signInUserSession.accessToken.jwtToken,
+          },
         }
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => setPointsOfSale(pointsOfSale => [...pointsOfSale, ...data['pointsOfSale']]));
-  };
+      )
+        .then((response) => response.json())
+        .then((data) =>
+          setPointsOfSale((pointsOfSale) => [
+            ...pointsOfSale,
+            ...data["pointsOfSale"],
+          ])
+        );
+    } catch (err) {
+      console.log(err);
+    }
+    return () => (isSubscribed = false);
+  }
 
   const handleSelectChange = (event) => {
     setPointOfSale(event.target.value);
@@ -119,11 +130,11 @@ export default function NewUser() {
               onChange={handleSelectChange}
               size="small"
             >
-              {
-                pointsOfSale.map((element, index) => (
-                  <MenuItem key={element.id} value={element.id}>{element.label}</MenuItem>    
-                ))
-              }
+              {pointsOfSale.map((element, index) => (
+                <MenuItem key={element.id} value={element.id}>
+                  {element.label}
+                </MenuItem>
+              ))}
             </Field>
             <Button
               variant="contained"

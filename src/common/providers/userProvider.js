@@ -19,7 +19,9 @@ export const UserProvider = ({ children }) => {
       await Auth.currentAuthenticatedUser().then((user) => {
         setUser(user);
         setIsAuthenticated(true);
-        setUserRole(user.signInUserSession.idToken.payload["cognito:groups"][0]);
+        setUserRole(
+          user.signInUserSession.idToken.payload["cognito:groups"][0]
+        );
         setIsLoading(false);
       });
     } catch (e) {
@@ -47,7 +49,7 @@ export const UserProvider = ({ children }) => {
       attributes: {
         email,
         phone_number,
-        'custom:point-of-sale' : pointOfSale
+        "custom:point-of-sale": pointOfSale,
       },
     })
       .then((user) => {
@@ -64,7 +66,9 @@ export const UserProvider = ({ children }) => {
       .then((user) => {
         setUser(user);
         console.log(user);
-        setUserRole(user.signInUserSession.idToken.payload["cognito:groups"][0]);
+        setUserRole(
+          user.signInUserSession.idToken.payload["cognito:groups"][0]
+        );
         setIsAuthenticated(true);
         return user;
       })

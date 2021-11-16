@@ -11,6 +11,7 @@ import Consumptions from "../../components/consumptions";
 import SalePoints from "../../components/salePoints";
 import NewUser from "../../components/users/newUser";
 import NewConsumption from "../../components/consumptions/newConsumption";
+import NewSalePoint from "../../components/salePoints/newSalePoint";
 import { Role } from "../roles/role";
 
 export default function Routes() {
@@ -23,7 +24,8 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/consumptions/new" component={NewConsumption}/>
       <AuthenticatedRoute exact path="/users" component={Users}/>
       <AuthenticatedRoute exact path="/users/new" component={NewUser} roles={[Role.Marina]}/>
-      <AuthenticatedRoute exact path="/sale-points" component={SalePoints}/>
+      <AuthenticatedRoute exact path="/points-of-sale" component={SalePoints}/>
+      <AuthenticatedRoute exact path="/points-of-sale/new" component={NewSalePoint} roles={[Role.Marina]}/>
       <Route component={NotFound} />
     </Switch>
   );

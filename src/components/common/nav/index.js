@@ -58,7 +58,7 @@ export default function ResponsiveDrawer(props) {
       <List onClick={handleDrawerToggle}>
         <CustomListItem to="/consumptions" text="Consumos" />
         <RestrictedUsersButton to="/users" text="Usuarios" />
-        <CustomListItem to="/sale-points" text="Puntos de venta" />
+        <CustomListItem to="/points-of-sale" text="Puntos de venta" />
         <Box m={2}>
           <Button onClick={handleLogout} variant="contained">
             Logout
