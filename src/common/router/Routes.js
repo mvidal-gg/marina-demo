@@ -6,6 +6,7 @@ import NotFound from "../../components/notFound/NotFound";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
 import ForgotPassword from "../../components/auth/forgotPassword";
+import ActivateAccount from "../../components/auth/activateAccount";
 import Users from "../../components/users";
 import Consumptions from "../../components/consumptions";
 import SalePoints from "../../components/salePoints";
@@ -19,6 +20,7 @@ export default function Routes() {
     <Switch>
       <UnauthenticatedRoute exact path="/login" component={Login}/>
       <UnauthenticatedRoute exact path="/forgot-password" component={ForgotPassword}/>
+      <UnauthenticatedRoute exact path="/activate-account" component={ActivateAccount}/>
       <AuthenticatedRoute exact path="/" component={Dashboard} />
       <AuthenticatedRoute exact path="/consumptions" component={Consumptions}/>
       <AuthenticatedRoute exact path="/consumptions/new" component={NewConsumption}/>

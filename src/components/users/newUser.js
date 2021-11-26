@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "../../common/hooks/useUser";
-import { Button, MenuItem, Select, TextField } from "@mui/material";
+import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 
 const initialFormValues = {
+  role: "",
   email: "",
   password: "",
   phone_number: "",
@@ -18,6 +19,7 @@ export default function NewUser() {
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const [pointOfSale, setPointOfSale] = useState("");
+  const [role, setRole] = useState("");
   const [pointsOfSale, setPointsOfSale] = useState([]);
 
   useEffect(() => {
@@ -53,15 +55,21 @@ export default function NewUser() {
     setPointOfSale(event.target.value);
   };
 
+  const handleSelectChangeRole = (event) => {
+    setRole(event.target.value);
+  };
+
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       setSubmitting(false);
+      var password = Math.random().toString(36).slice(-8);
       await signUp(
         values.email,
-        values.password,
+        password,
         values.phone_number,
         values.email,
-        pointOfSale
+        pointOfSale,
+        role
       );
       enqueueSnackbar("Usuario creado correctamente", {
         variant: "success",
@@ -75,7 +83,9 @@ export default function NewUser() {
 
   return (
     <>
-      <h3>Introduce email contraseña y teléfono para crear un nuevo usuario</h3>
+      <h3>
+        Introduce tipo de usuario, email y teléfono para crear un nuevo usuario
+      </h3>
       <Formik initialValues={initialFormValues} onSubmit={handleSubmit}>
         {({ handleChange, values, isSubmitting, isValid }) => (
           <Box
@@ -85,6 +95,25 @@ export default function NewUser() {
             }}
             autoComplete="off"
           >
+            <InputLabel id="role-label">Tipo de usuario</InputLabel>
+            <Field
+              as={Select}
+              labelId="role-label"
+              id="role"
+              label="Tipo de usuario"
+              value={role}
+              fullWidth
+              onChange={handleSelectChangeRole}
+              size="small"
+            >
+              <MenuItem key="kiosko" value="kiosko">
+                Kiosko
+              </MenuItem>
+              <MenuItem key="marina" value="marina">
+                Marina
+              </MenuItem>
+            </Field>
+            <ErrorMessage name="email" component="div" />
             <Field
               as={TextField}
               type="email"
@@ -96,18 +125,6 @@ export default function NewUser() {
               autoComplete="on"
               size="small"
             />
-            <ErrorMessage name="email" component="div" />
-            <Field
-              as={TextField}
-              type="password"
-              name="password"
-              label="password"
-              onChange={handleChange}
-              value={values.password}
-              fullWidth
-              autoComplete="on"
-              size="small"
-            />{" "}
             <ErrorMessage name="phone_number" component="div" />
             <Field
               as={TextField}
@@ -120,22 +137,27 @@ export default function NewUser() {
               autoComplete="on"
               size="small"
             />
-            <Field
-              as={Select}
-              label="Punto de venta"
-              labelId="point-of-sale"
-              id="point-of-sale"
-              value={pointOfSale}
-              fullWidth
-              onChange={handleSelectChange}
-              size="small"
-            >
-              {pointsOfSale.map((element, index) => (
-                <MenuItem key={element.id} value={element.id}>
-                  {element.label}
-                </MenuItem>
-              ))}
-            </Field>
+            {role === "kiosko" && (
+              <>
+                <InputLabel id="point-of-sale-label">Punto de venta</InputLabel>
+                <Field
+                  as={Select}
+                  labelId="point-of-sale-label"
+                  id="point-of-sale"
+                  value={pointOfSale}
+                  label="Punto de venta"
+                  fullWidth
+                  onChange={handleSelectChange}
+                  size="small"
+                >
+                  {pointsOfSale.map((element, index) => (
+                    <MenuItem key={element.id} value={element.id}>
+                      {element.label}
+                    </MenuItem>
+                  ))}
+                </Field>
+              </>
+            )}
             <Button
               variant="contained"
               type="submit"

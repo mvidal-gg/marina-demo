@@ -31,8 +31,10 @@ export const UserProvider = ({ children }) => {
     return () => (isSubscribed = false);
   }
 
-  const confirmSignUp = (username, code) =>
-    Auth.confirmSignUp(username, code)
+  const confirmSignUp = (username, code, codeTemp) =>
+    Auth.confirmSignUp(username, code, {
+      clientMetadata: { codeTemp: codeTemp },
+    })
       .then((user) => {
         console.log("Confirmed user =>" + user);
         return true;
@@ -42,7 +44,14 @@ export const UserProvider = ({ children }) => {
         return false;
       });
 
-  const signUp = (username, password, phone_number, email, pointOfSale) =>
+  const signUp = (
+    username,
+    password,
+    phone_number,
+    email,
+    pointOfSale = "",
+    role = ""
+  ) =>
     Auth.signUp({
       username,
       password,
@@ -50,6 +59,7 @@ export const UserProvider = ({ children }) => {
         email,
         phone_number,
         "custom:point-of-sale": pointOfSale,
+        "custom:role": role,
       },
     })
       .then((user) => {
@@ -61,16 +71,22 @@ export const UserProvider = ({ children }) => {
         return false;
       });
 
-  const login = (email, password) =>
+  const login = (email, password, newPassword = "") =>
     Auth.signIn(email, password)
       .then((user) => {
-        setUser(user);
-        console.log(user);
-        setUserRole(
-          user.signInUserSession.idToken.payload["cognito:groups"][0]
-        );
-        setIsAuthenticated(true);
-        return user;
+        if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
+          console.log("Esta cuenta requiere cambiar el password");
+          Auth.completeNewPassword(user, newPassword);
+          login(user.challengeParam.userAttributes.email, newPassword);
+        } else {
+          setUser(user);
+          console.log(user);
+          setUserRole(
+            user.signInUserSession.idToken.payload["cognito:groups"][0]
+          );
+          setIsAuthenticated(true);
+          return user;
+        }
       })
       .catch((err) => {
         if (err.code === "UserNotFoundException") {
