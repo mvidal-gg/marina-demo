@@ -34,7 +34,7 @@ export default function Consumptions() {
         {
           method: "GET",
           headers: {
-            Authorization: user.signInUserSession.accessToken.jwtToken,
+            Authorization: user.signInUserSession.idToken.jwtToken,
           },
         }
       )
