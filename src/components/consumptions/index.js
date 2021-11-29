@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../common/hooks/useUser";
 import { Button } from "@mui/material";
-import { DataGrid } from '@material-ui/data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { Link } from "react-router-dom";
-import configAPI from "../../config/configApi.json";
-import { ConsoleLogger } from "@aws-amplify/core";
 
 export default function Consumptions() {
   const { user } = useUser();
@@ -19,7 +17,7 @@ export default function Consumptions() {
     { title: "create_user", field: "create_user" },
     { title: "update_user", field: "update_user" },
     { title: "created", field: "created" },
-    { title: "update", field: "update" }
+    { title: "update", field: "update" },
   ];
 
   useEffect(() => {
@@ -54,13 +52,15 @@ export default function Consumptions() {
   return (
     <>
       <h3> Consumptions component. Acceso privado</h3>
-       <DataGrid
-        rows={consumptions}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-      />
+      <div style={{ height: 400, width: "100%" }}>
+        <DataGrid
+          rows={consumptions}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+        />
+      </div>
 
       <Button component={Link} to="/consumptions/new" variant="contained">
         Nuevo

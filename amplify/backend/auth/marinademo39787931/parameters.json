@@ -1,6 +1,6 @@
 {
     "identityPoolName": "marinademo39787931_identitypool_39787931",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "marina39787931",
     "userPoolName": "marinademo39787931_userpool_39787931",
     "autoVerifiedAttributes": [
