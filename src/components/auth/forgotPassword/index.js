@@ -3,6 +3,8 @@ import { useUser } from "../../../common/hooks/useUser";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
+import { Box } from "@mui/system";
+import { Button, CircularProgress, TextField } from "@mui/material";
 
 const initialFormValues = { username: "" };
 const initialFormForgotSubmitValues = {
@@ -12,17 +14,13 @@ const initialFormForgotSubmitValues = {
 };
 
 const ForgotSubmitSchema = Yup.object().shape({
-  code: Yup.string()
-    .min(6)
-    .required(),
-  password: Yup.string()
-    .min(8)
-    .required(),
+  code: Yup.string().min(6).required(),
+  password: Yup.string().min(8).required(),
   confirm_password: Yup.string()
     .min(8)
-    .required('Password is required')
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
-})
+    .required("Password is required")
+    .oneOf([Yup.ref("password"), null], "Passwords must match"),
+});
 
 function ForgotPassword(props) {
   const { sendConfirmationCode, setNewPassword } = useUser();
@@ -32,9 +30,9 @@ function ForgotPassword(props) {
 
   const handleForgotPassword = async (values, { setSubmitting, setErrors }) => {
     try {
-      setSubmitting(false);
       setUsername(values.username);
       await sendConfirmationCode(values.username);
+      setSubmitting(false);
       setIsConfirmationSend(true);
     } catch (err) {
       setSubmitting(false);
@@ -47,8 +45,8 @@ function ForgotPassword(props) {
     { setSubmitting, setErrors }
   ) => {
     try {
-      setSubmitting(false);
       await setNewPassword(username, values.code, values.password);
+      setSubmitting(false);
       history.push("/login");
     } catch (err) {
       setSubmitting(false);
@@ -69,14 +67,45 @@ function ForgotPassword(props) {
           initialValues={initialFormValues}
           onSubmit={handleForgotPassword}
         >
-          {({ isSubmitting, values, isValid }) => (
-            <Form>
-              <Field type="email" name="username" />
-              <ErrorMessage name="email" component="div" />
-              <button type="submit" disabled={isSubmitting || !isValid}>
+          {({ handleChange, isSubmitting, values, isValid }) => (
+            <Box
+              component={Form}
+              sx={{
+                "& .MuiTextField-root": { m: 1, width: "100" },
+              }}
+              autoComplete="off"
+            >
+              <Field
+                as={TextField}
+                type="email"
+                name="username"
+                onChange={handleChange}
+                value={values.username}
+                fullWidth
+                autoComplete="on"
+                size="small"
+              />
+              <ErrorMessage name="username" component="div" />
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={isSubmitting || !isValid}
+              >
+                {isSubmitting && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
                 Aceptar
-              </button>
-            </Form>
+              </Button>
+            </Box>
           )}
         </Formik>
       </div>
@@ -90,18 +119,64 @@ function ForgotPassword(props) {
           onSubmit={handleForgotPasswordSubmit}
           validationSchema={ForgotSubmitSchema}
         >
-          {({ isSubmitting, values, isValid }) => (
-            <Form>
-              <Field type="text" name="code" />
+          {({ handleChange, isSubmitting, values, isValid }) => (
+            <Box
+              component={Form}
+              sx={{
+                "& .MuiTextField-root": { m: 1, width: "100" },
+              }}
+              autoComplete="off"
+            >
+              <Field
+                as={TextField}
+                type="text"
+                name="code"
+                onChange={handleChange}
+                value={values.code}
+                fullWidth
+                size="small"
+              />
               <ErrorMessage name="code" component="div" />
-              <Field type="password" name="password" />
+              <Field
+                as={TextField}
+                type="password"
+                name="password"
+                onChange={handleChange}
+                value={values.password}
+                fullWidth
+                size="small"
+              />
               <ErrorMessage name="password" component="div" />
-              <Field type="password" name="confirm_password" />
+              <Field
+                as={TextField}
+                type="password"
+                name="confirm_password"
+                onChange={handleChange}
+                value={values.confirm_password}
+                fullWidth
+                size="small"
+              />
               <ErrorMessage name="confirm_password" component="div" />
-              <button type="submit" disabled={isSubmitting || !isValid}>
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={isSubmitting || !isValid}
+              >
+                {isSubmitting && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
                 Aceptar
-              </button>
-            </Form>
+              </Button>
+            </Box>
           )}
         </Formik>
       </>

@@ -34,8 +34,8 @@ function Login() {
 
   const handleVerifySubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      setSubmitting(false);
       await confirmSignUp(email, values.code);
+      setSubmitting(false);
       enqueueSnackbar("Usuario verificado", {
         variant: "success",
       });
@@ -59,7 +59,6 @@ function Login() {
               }}
               autoComplete="off"
             >
-              {console.log("isSubmitting:" + isSubmitting)}
               <Field
                 as={TextField}
                 type="email"

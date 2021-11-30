@@ -14,21 +14,23 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   async function onLoad() {
-    let isSubscribed = true;
+    let mounted = true;
     try {
-      await Auth.currentAuthenticatedUser().then((user) => {
-        setUser(user);
-        setIsAuthenticated(true);
-        setUserRole(
-          user.signInUserSession.idToken.payload["cognito:groups"][0]
-        );
-        setIsLoading(false);
-      });
+      if (mounted) {
+        await Auth.currentAuthenticatedUser().then((user) => {
+          setUser(user);
+          setIsAuthenticated(true);
+          setUserRole(
+            user.signInUserSession.idToken.payload["cognito:groups"][0]
+          );
+          setIsLoading(false);
+        });
+      }
     } catch (e) {
       console.log(e);
       setIsLoading(false);
     }
-    return () => (isSubscribed = false);
+    return () => (mounted = false);
   }
 
   const confirmSignUp = (username, code, codeTemp) =>

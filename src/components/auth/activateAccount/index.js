@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "../../../common/hooks/useUser";
 import { Link } from "react-router-dom";
-import { Button, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSnackbar } from "notistack";
 
@@ -18,11 +18,11 @@ function ActivateAccount() {
 
   const handleVerifySubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      setSubmitting(false);
       setEmail(values.email);
       var code = Math.random().toString(36).slice(-8);
       setCodeTemp(code);
       await confirmSignUp(values.email, values.code, code);
+      setSubmitting(false);
       enqueueSnackbar("Usuario verificado", {
         variant: "success",
       });
@@ -35,8 +35,8 @@ function ActivateAccount() {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      setSubmitting(false);
       await login(email, codeTemp, values.password);
+      setSubmitting(false);
     } catch (err) {
       if (err.code === "UserNotConfirmedException") {
         setIsUserValidated(false);
@@ -50,8 +50,10 @@ function ActivateAccount() {
   if (isUserValidated) {
     return (
       <>
-        <h3>Cuenta activada correctamente. 
-          Establezca un password para terminar la activación de la cuenta</h3>
+        <h3>
+          Cuenta activada correctamente. Establezca un password para terminar la
+          activación de la cuenta
+        </h3>
         <Formik initialValues={initialFormValues} onSubmit={handleSubmit}>
           {({ handleChange, values, isSubmitting, isValid }) => (
             <Box
@@ -84,19 +86,31 @@ function ActivateAccount() {
                 autoComplete="on"
                 size="small"
               />
-              <ErrorMessage name="password" component="div" />              
+              <ErrorMessage name="password" component="div" />
               <Button
                 variant="contained"
                 type="submit"
                 disabled={isSubmitting || !isValid}
               >
+                {isSubmitting && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
                 Continuar
               </Button>
             </Box>
           )}
         </Formik>
       </>
-    );    
+    );
   } else {
     return (
       <>
@@ -143,6 +157,18 @@ function ActivateAccount() {
                 type="submit"
                 disabled={isSubmitting || !isValid}
               >
+                {isSubmitting && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
                 Continuar
               </Button>
             </Box>

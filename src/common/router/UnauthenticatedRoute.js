@@ -12,8 +12,6 @@ export default function UnauthenticatedRoute({
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log(isLoading)
-  console.log(isAuthenticated)
   
   return (
     <Route

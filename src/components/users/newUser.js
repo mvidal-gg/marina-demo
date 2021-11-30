@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "../../common/hooks/useUser";
-import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
+import getPointsOfSale from "../../services/pointsOfSaleApiService";
+import { fetchData } from "../../services/fetchData";
+import { useApi } from "../../common/hooks/useApi";
 
 const initialFormValues = {
   role: "",
@@ -20,36 +30,14 @@ export default function NewUser() {
   const history = useHistory();
   const [pointOfSale, setPointOfSale] = useState("");
   const [role, setRole] = useState("");
-  const [pointsOfSale, setPointsOfSale] = useState([]);
+  const userToken = user.signInUserSession.idToken.jwtToken;
+  const [pointsOfSale, setPointsOfSale] = useApi(() =>
+    getPointsOfSale(userToken)
+  );
 
   useEffect(() => {
-    fetchData();
+    fetchData(setPointsOfSale);
   }, []);
-
-  async function fetchData() {
-    let isSubscribed = true;
-    try {
-      await fetch(
-        "https://k1c8hx53c3.execute-api.us-east-2.amazonaws.com/beta/tarjetas-club/point-of-sale?scope=internal",
-        {
-          method: "GET",
-          headers: {
-            Authorization: user.signInUserSession.idToken.jwtToken,
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) =>
-          setPointsOfSale((pointsOfSale) => [
-            ...pointsOfSale,
-            ...data["pointsOfSale"],
-          ])
-        );
-    } catch (err) {
-      console.log(err);
-    }
-    return () => (isSubscribed = false);
-  }
 
   const handleSelectChange = (event) => {
     setPointOfSale(event.target.value);
@@ -61,7 +49,6 @@ export default function NewUser() {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      setSubmitting(false);
       var password = Math.random().toString(36).slice(-8);
       await signUp(
         values.email,
@@ -71,6 +58,7 @@ export default function NewUser() {
         pointOfSale,
         role
       );
+      setSubmitting(false);
       enqueueSnackbar("Usuario creado correctamente", {
         variant: "success",
       });
@@ -78,6 +66,9 @@ export default function NewUser() {
     } catch (err) {
       setSubmitting(false);
       setErrors({ password: err.message });
+      enqueueSnackbar(err.message, {
+        variant: "error",
+      });
     }
   };
 
@@ -150,7 +141,7 @@ export default function NewUser() {
                   onChange={handleSelectChange}
                   size="small"
                 >
-                  {pointsOfSale.map((element, index) => (
+                  {pointsOfSale.data.map((element, index) => (
                     <MenuItem key={element.id} value={element.id}>
                       {element.label}
                     </MenuItem>
@@ -163,7 +154,19 @@ export default function NewUser() {
               type="submit"
               disabled={isSubmitting || !isValid}
             >
-              Continuar
+              {isSubmitting && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: "-12px",
+                    marginLeft: "-12px",
+                  }}
+                />
+              )}
+              Crear usuario
             </Button>
           </Box>
         )}
