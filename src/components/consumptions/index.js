@@ -34,15 +34,19 @@ export default function Consumptions() {
     <>
       <h3> Consumptions component. Acceso privado</h3>
       <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={consumptions.data || []}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-        />
+        {consumptions.isFetching ? (
+          <p>Cargando...</p>
+        ) : (
+          <DataGrid
+            rows={consumptions.data || []}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            checkboxSelection
+          />
+        )}
       </div>
-
+      
       <Button component={Link} to="/consumptions/new" variant="contained">
         Nuevo
       </Button>
