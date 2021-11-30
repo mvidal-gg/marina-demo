@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../common/hooks/useUser";
 import { Button } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
+import { useApi } from "../../common/hooks/useApi";
+import getConsumptions from "../../services/consumptionApiService";
+import { fetchData } from "../../services/fetchData";
 
 export default function Consumptions() {
   const { user } = useUser();
-  const [consumptions, setConsumptions] = useState([]);
+  const userToken = user.signInUserSession.idToken.jwtToken;
+  const [consumptions, setConsumptions] = useApi(() =>
+    getConsumptions(userToken)
+  );
   const columns = [
     { title: "id", field: "id" },
     { title: "idPublication", field: "idPublication" },
@@ -21,40 +27,15 @@ export default function Consumptions() {
   ];
 
   useEffect(() => {
-    fetchData();
+    fetchData(setConsumptions);
   }, []);
-
-  async function fetchData() {
-    let isSubscribed = true;
-    try {
-      await fetch(
-        "https://k1c8hx53c3.execute-api.us-east-2.amazonaws.com/beta/tarjetas-club/consumption?pointSaleId=2&dateConsumption=25/11/2021",
-        {
-          method: "GET",
-          headers: {
-            Authorization: user.signInUserSession.idToken.jwtToken,
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) =>
-          setConsumptions((pointsOfSale) => [
-            ...pointsOfSale,
-            ...data["body"]["consumptions"],
-          ])
-        );
-    } catch (err) {
-      console.log(err);
-    }
-    return () => (isSubscribed = false);
-  }
 
   return (
     <>
       <h3> Consumptions component. Acceso privado</h3>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
-          rows={consumptions}
+          rows={consumptions.data || []}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
