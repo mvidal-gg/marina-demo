@@ -48,7 +48,7 @@ export default function Consumptions() {
       </div>
       
       <Button component={Link} to="/consumptions/new" variant="contained">
-        Nuevo
+        Nuevo consumo
       </Button>
     </>
   );
