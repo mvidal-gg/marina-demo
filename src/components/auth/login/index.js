@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "../../../common/hooks/useUser";
 import { Link } from "react-router-dom";
-import { Button, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSnackbar } from "notistack";
 
@@ -18,10 +18,10 @@ function Login() {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      setSubmitting(false);
       setEmail(values.email);
       setPassword(values.password);
       await login(values.email, values.password);
+      setSubmitting(false);
     } catch (err) {
       if (err.code === "UserNotConfirmedException") {
         setIsUserValidated(false);
@@ -59,6 +59,7 @@ function Login() {
               }}
               autoComplete="off"
             >
+              {console.log("isSubmitting:" + isSubmitting)}
               <Field
                 as={TextField}
                 type="email"
@@ -79,17 +80,31 @@ function Login() {
                 fullWidth
                 autoComplete="on"
                 size="small"
-              />{" "}
+              />
               <ErrorMessage name="password" component="div" />
               <Button
                 variant="contained"
                 type="submit"
                 disabled={isSubmitting || !isValid}
               >
-                Continuar
+                {isSubmitting && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
+                Iniciar sesión
               </Button>
-              <br/><Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
-              <br/><Link to="/activate-account">¿Necesitas activar tu cuenta?</Link>
+              <br />
+              <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+              <br />
+              <Link to="/activate-account">¿Necesitas activar tu cuenta?</Link>
             </Box>
           )}
         </Formik>
