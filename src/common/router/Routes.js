@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Login from "../../components/auth/login";
 import NotFound from "../../components/notFound/NotFound";
 import AuthenticatedRoute from "./AuthenticatedRoute";
@@ -17,15 +17,44 @@ import { Role } from "../roles/role";
 export default function Routes() {
   return (
     <Switch>
-      <UnauthenticatedRoute exact path="/login" component={Login}/>
-      <UnauthenticatedRoute exact path="/forgot-password" component={ForgotPassword}/>
-      <UnauthenticatedRoute exact path="/activate-account" component={ActivateAccount}/>
-      <AuthenticatedRoute exact path="/consumptions" component={Consumptions}/>
-      <AuthenticatedRoute exact path="/consumptions/new" component={NewConsumption}/>
-      <AuthenticatedRoute exact path="/users" component={Users}/>
-      <AuthenticatedRoute exact path="/users/new" component={NewUser} roles={[Role.Marina]}/>
-      <AuthenticatedRoute exact path="/points-of-sale" component={SalePoints}/>
-      <AuthenticatedRoute exact path="/points-of-sale/new" component={NewSalePoint} roles={[Role.Marina]}/>
+      <UnauthenticatedRoute exact path="/login" component={Login} />
+      <UnauthenticatedRoute
+        exact
+        path="/forgot-password"
+        component={ForgotPassword}
+      />
+      <UnauthenticatedRoute
+        exact
+        path="/activate-account"
+        component={ActivateAccount}
+      />
+      <AuthenticatedRoute
+        exact
+        path="/consumptions"
+        component={Consumptions}
+      />
+      <AuthenticatedRoute
+        exact
+        path="/consumptions/new"
+        component={NewConsumption}
+      />
+      <AuthenticatedRoute exact path="/users" component={Users} />
+      <AuthenticatedRoute
+        exact
+        path="/users/new"
+        component={NewUser}
+        roles={[Role.Marina]}
+      />
+      <AuthenticatedRoute exact path="/points-of-sale" component={SalePoints} />
+      <AuthenticatedRoute
+        exact
+        path="/points-of-sale/new"
+        component={NewSalePoint}
+        roles={[Role.Marina]}
+      />
+      <Route exact path="/">
+        <Redirect to="/consumptions" />
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
