@@ -27,7 +27,7 @@ export default function UnauthenticatedRoute({
           return (
             <Redirect
               to={{
-                pathname: "/",
+                pathname: "/consumptions",
                 state: {
                   from: props.location,
                 },

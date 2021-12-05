@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Dashboard from "../../components/dashboard";
 import Login from "../../components/auth/login";
 import NotFound from "../../components/notFound/NotFound";
 import AuthenticatedRoute from "./AuthenticatedRoute";
@@ -21,7 +20,6 @@ export default function Routes() {
       <UnauthenticatedRoute exact path="/login" component={Login}/>
       <UnauthenticatedRoute exact path="/forgot-password" component={ForgotPassword}/>
       <UnauthenticatedRoute exact path="/activate-account" component={ActivateAccount}/>
-      <AuthenticatedRoute exact path="/" component={Dashboard} />
       <AuthenticatedRoute exact path="/consumptions" component={Consumptions}/>
       <AuthenticatedRoute exact path="/consumptions/new" component={NewConsumption}/>
       <AuthenticatedRoute exact path="/users" component={Users}/>

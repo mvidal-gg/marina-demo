@@ -40,7 +40,7 @@ export default function AuthenticatedRoute({
           return (
             <Redirect
               to={{
-                pathname: "/",
+                pathname: "/consumptions",
                 state: {
                   from: props.location,
                 },

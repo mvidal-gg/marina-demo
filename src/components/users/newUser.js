@@ -47,6 +47,7 @@ export default function NewUser() {
     setRole(event.target.value);
   };
 
+  //TODO: Cuando peta la creacion de usuario te sale como si se hubiera creado bien
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       var password = Math.random().toString(36).slice(-8);

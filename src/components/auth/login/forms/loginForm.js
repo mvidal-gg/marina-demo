@@ -3,11 +3,15 @@ import { Box } from "@mui/system";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useUser } from "../../../../common/hooks/useUser";
 import { SubmitButton } from "../../../common/forms/submitButton";
+import { useSnackbar } from "notistack";
+import { useHistory } from "react-router-dom";
 
 const initialFormValues = { email: "", password: "" };
 
-export const UserValidatedForm = (setIsUserValidated) => {
+export const LoginForm = () => {
   const { login } = useUser();
+  const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
@@ -16,9 +20,12 @@ export const UserValidatedForm = (setIsUserValidated) => {
       setSubmitting(false);
     } catch (err) {
       if (err.code === "UserNotConfirmedException") {
-        setIsUserValidated(false);
+        enqueueSnackbar("El usuario está pendiente de activación", {
+          variant: "error",
+        });
+        history.push("/activate-account");
       } else {
-        setSubmitting(false);
+        console.log(err);
         setErrors({ password: err.message });
       }
     }

@@ -1,26 +1,27 @@
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useSnackbar } from "notistack";
 import { useUser } from "../../../../common/hooks/useUser";
 import { SubmitButton } from "../../../common/forms/submitButton";
+import { useSnackbar } from "notistack";
 
-const initialFormValues = { code: "" };
+const initialFormValues = { email: "", code: "" };
 
-export const UserNotValidatedForm = (setIsUserValidated) => {
-  const { login, confirmSignUp } = useUser();
+export const UserNotValidatedForm = ({ setIsUserValidated, setEmail, setCodeTemp }) => {
+  const { confirmSignUp } = useUser();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const { email, password, code } = values;
-      await confirmSignUp(email, code);
+      setEmail(values.email);
+      var code = Math.random().toString(36).slice(-8);
+      setCodeTemp(code);
+      await confirmSignUp(values.email, values.code, code);
       setSubmitting(false);
-      setIsUserValidated(true);
-      enqueueSnackbar("Usuario verificado", {
+      enqueueSnackbar("Usuario verificado. Introduce una nueva contraseña", {
         variant: "success",
       });
-      await login(email, password);
+      setIsUserValidated(true);
     } catch (err) {
       setSubmitting(false);
       setErrors({ code: err.message });
@@ -39,6 +40,17 @@ export const UserNotValidatedForm = (setIsUserValidated) => {
         >
           <Field
             as={TextField}
+            type="email"
+            name="email"
+            onChange={handleChange}
+            value={values.email}
+            fullWidth
+            autoComplete="on"
+            size="small"
+          />
+          <ErrorMessage name="email" component="div" />
+          <Field
+            as={TextField}
             type="string"
             name="code"
             onChange={handleChange}
@@ -52,7 +64,7 @@ export const UserNotValidatedForm = (setIsUserValidated) => {
             text="Continuar"
             isSubmitting={isSubmitting}
             isValid={isValid}
-          ></SubmitButton>
+          />
         </Box>
       )}
     </Formik>

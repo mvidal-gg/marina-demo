@@ -92,7 +92,7 @@ export default function ResponsiveDrawer(props) {
             </IconButton>
           )}
           <Typography variant="h6" noWrap component="div">
-            <Link to="/">Marina Demo</Link>
+            <Link to="/consumptions">Marina Demo</Link>
           </Typography>
         </Toolbar>
       </AppBar>

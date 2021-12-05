@@ -73,11 +73,12 @@ export const UserProvider = ({ children }) => {
         return false;
       });
 
+  //TODO: REVISAR CUANDO EL USUARIO ACTIVA SU CUENTA Y PONE NUEVO PASS,
+  //A VECES FALLA CON MENSAJE DE LOGIN INCORRECT USERNAME OR PASSWORD
   const login = (email, password, newPassword = "") =>
     Auth.signIn(email, password)
       .then((user) => {
         if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
-          console.log("Esta cuenta requiere cambiar el password");
           Auth.completeNewPassword(user, newPassword);
           login(user.challengeParam.userAttributes.email, newPassword);
         } else {
