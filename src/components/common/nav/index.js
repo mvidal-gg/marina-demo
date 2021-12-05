@@ -17,7 +17,7 @@ import { useUser } from "../../../common/hooks/useUser";
 import { Role } from "../../../common/roles/role";
 import withRole from "../../../common/roles/withRole";
 import { useHistory } from "react-router-dom";
-import { Button } from "@mui/material";
+import { LogoutOutlined } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -26,7 +26,7 @@ export default function ResponsiveDrawer(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const location = useLocation();
   const history = useHistory();
-  const { logout } = useUser();
+  const { logout, userRole } = useUser();
   const { isAuthenticated } = useUser();
 
   async function handleLogout() {
@@ -60,9 +60,10 @@ export default function ResponsiveDrawer(props) {
         <RestrictedUsersButton to="/users" text="Usuarios" />
         <CustomListItem to="/points-of-sale" text="Puntos de venta" />
         <Box m={2}>
-          <Button onClick={handleLogout} variant="contained">
-            Logout
-          </Button>
+          {userRole}
+          <IconButton onClick={handleLogout} aria-label="logout">
+            <LogoutOutlined />
+          </IconButton>
         </Box>
       </List>
     </div>

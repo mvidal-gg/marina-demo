@@ -1,22 +1,18 @@
-import { Button, CircularProgress, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useSnackbar } from "notistack";
-import { useState } from "react";
 import { useUser } from "../../../../common/hooks/useUser";
+import { SubmitButton } from "../../../common/forms/submitButton";
 
 const initialFormValues = { email: "", password: "" };
 
 export const UserValidatedForm = (setIsUserValidated) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { login } = useUser();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      setEmail(values.email);
-      setPassword(values.password);
-      await login(values.email, values.password);
+      const { email, password } = values;
+      await login(email, password);
       setSubmitting(false);
     } catch (err) {
       if (err.code === "UserNotConfirmedException") {
@@ -60,25 +56,11 @@ export const UserValidatedForm = (setIsUserValidated) => {
             size="small"
           />
           <ErrorMessage name="password" component="div" />
-          <Button
-            variant="contained"
-            type="submit"
-            disabled={isSubmitting || !isValid}
-          >
-            {isSubmitting && (
-              <CircularProgress
-                size={24}
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  marginTop: "-12px",
-                  marginLeft: "-12px",
-                }}
-              />
-            )}
-            Iniciar sesión
-          </Button>
+          <SubmitButton
+            text="Iniciar sesión"
+            isSubmitting={isSubmitting}
+            isValid={isValid}
+          ></SubmitButton>
         </Box>
       )}
     </Formik>

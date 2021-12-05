@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useUser } from "../../../common/hooks/useUser";
-import { useSnackbar } from "notistack";
 import { UserValidatedForm } from "./forms/UserValidatedForm";
 import { Link } from "react-router-dom";
 import { UserNotValidatedForm } from "./forms/UserNotValidatedForm";

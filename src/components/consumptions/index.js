@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useUser } from "../../common/hooks/useUser";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { useApi } from "../../common/hooks/useApi";
@@ -33,9 +33,17 @@ export default function Consumptions() {
   return (
     <>
       <h3> Consumptions component. Acceso privado</h3>
-      <div style={{ height: 400, width: "100%" }}>
+      <div
+        style={{
+          height: 400,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {consumptions.isFetching ? (
-          <p>Cargando...</p>
+          <CircularProgress size={24} />
         ) : (
           <DataGrid
             rows={consumptions.data || []}
@@ -46,7 +54,7 @@ export default function Consumptions() {
           />
         )}
       </div>
-      
+
       <Button component={Link} to="/consumptions/new" variant="contained">
         Nuevo consumo
       </Button>
