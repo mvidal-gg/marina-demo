@@ -8,7 +8,8 @@ import { Amplify } from "aws-amplify";
 import config from "./aws-exports";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
-
+import { Provider } from "react-redux";
+import store from "./common/store/store"
 Amplify.configure(config);
 
 const marinaTheme = createTheme({
@@ -20,14 +21,16 @@ const marinaTheme = createTheme({
 });
 
 ReactDOM.render(
-  <UserProvider>
-    <ThemeProvider theme={marinaTheme}>
-      <SnackbarProvider maxSnack={3} hideIconVariant>
-        <Router>
-          <App />
-        </Router>
-      </SnackbarProvider>
-    </ThemeProvider>
-  </UserProvider>,
+  <Provider store={store}>
+    <UserProvider>
+      <ThemeProvider theme={marinaTheme}>
+        <SnackbarProvider maxSnack={3} hideIconVariant>
+          <Router>
+            <App />
+          </Router>
+        </SnackbarProvider>
+      </ThemeProvider>
+    </UserProvider>
+  </Provider>,
   document.getElementById("root")
 );

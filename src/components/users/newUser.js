@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "../../common/hooks/useUser";
-import {
-  Button,
-  CircularProgress,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { SubmitButton } from "../common/forms/submitButton";
+
 import { Box } from "@mui/system";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import getPointsOfSale from "../../services/pointsOfSaleApiService";
-import { fetchData } from "../../services/fetchData";
-import { useApi } from "../../common/hooks/useApi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchPointsOfSale,
+  selectAllPointsOfSale,
+} from "../../common/features/pointsOfSale/pointsOfSaleSlice";
 
 const initialFormValues = {
   role: "",
@@ -31,13 +28,17 @@ export default function NewUser() {
   const [pointOfSale, setPointOfSale] = useState("");
   const [role, setRole] = useState("");
   const userToken = user.signInUserSession.idToken.jwtToken;
-  const [pointsOfSale, setPointsOfSale] = useApi(() =>
-    getPointsOfSale(userToken)
-  );
+
+  const dispatch = useDispatch();
+  const pointsOfSale = useSelector(selectAllPointsOfSale);
+  const pointsOfSaleStatus = useSelector((state) => state.pointsOfSale.status);
+  const error = useSelector((state) => state.pointsOfSale.error);
 
   useEffect(() => {
-    fetchData(setPointsOfSale);
-  }, []);
+    if (pointsOfSaleStatus === "idle") {
+      dispatch(fetchPointsOfSale(userToken));
+    }
+  }, [pointsOfSaleStatus, userToken, dispatch]);
 
   const handleSelectChange = (event) => {
     setPointOfSale(event.target.value);
@@ -142,7 +143,7 @@ export default function NewUser() {
                   onChange={handleSelectChange}
                   size="small"
                 >
-                  {pointsOfSale.data.map((element, index) => (
+                  {pointsOfSale.map((element, index) => (
                     <MenuItem key={element.id} value={element.id}>
                       {element.label}
                     </MenuItem>
@@ -150,25 +151,11 @@ export default function NewUser() {
                 </Field>
               </>
             )}
-            <Button
-              variant="contained"
-              type="submit"
-              disabled={isSubmitting || !isValid}
-            >
-              {isSubmitting && (
-                <CircularProgress
-                  size={24}
-                  sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: "-12px",
-                    marginLeft: "-12px",
-                  }}
-                />
-              )}
-              Crear usuario
-            </Button>
+            <SubmitButton
+              text="Crear usuario"
+              isValid={isValid}
+              isSubmitting={isSubmitting}
+            />
           </Box>
         )}
       </Formik>

@@ -3,17 +3,21 @@ import { useUser } from "../../common/hooks/useUser";
 import { Button, CircularProgress } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
-import { useApi } from "../../common/hooks/useApi";
-import getConsumptions from "../../services/consumptionApiService";
-import { fetchData } from "../../services/fetchData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchConsumptions,
+  selectAllConsumptions,
+} from "../../common/features/consumptions/consumptionsSlice";
 
 export default function Consumptions() {
   const { user } = useUser();
   const userToken = user.signInUserSession.idToken.jwtToken;
   const [selection, setSelection] = useState([]);
-  const [consumptions, setConsumptions] = useApi(() =>
-    getConsumptions(userToken)
-  );
+
+  const dispatch = useDispatch();
+  const consumptions = useSelector(selectAllConsumptions);
+  const consumptionsStatus = useSelector((state) => state.consumptions.status);
+  const error = useSelector((state) => state.consumptions.error);
 
   const columns = [
     { title: "id", field: "id" },
@@ -37,8 +41,28 @@ export default function Consumptions() {
   };
 
   useEffect(() => {
-    fetchData(setConsumptions);
-  }, []);
+    if (consumptionsStatus === "idle") {
+      dispatch(fetchConsumptions(userToken));
+    }
+  }, [consumptionsStatus, userToken, dispatch]);
+
+  let content;
+  if (consumptionsStatus === "loading") {
+    content = <CircularProgress size={24} />;
+  } else if (consumptionsStatus === "succeeded") {
+    content = (
+      <DataGrid
+        rows={consumptions}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        checkboxSelection
+        onSelectionModelChange={handleSelection}
+      />
+    );
+  } else if (consumptionsStatus === "failed") {
+    content = <div>{error}</div>;
+  }
 
   return (
     <>
@@ -52,18 +76,7 @@ export default function Consumptions() {
           justifyContent: "center",
         }}
       >
-        {consumptions.isFetching ? (
-          <CircularProgress size={24} />
-        ) : (
-          <DataGrid
-            rows={consumptions.data || []}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            checkboxSelection
-            onSelectionModelChange={handleSelection}
-          />
-        )}
+        {content}
       </div>
 
       <Button component={Link} to="/consumptions/new" variant="contained">
