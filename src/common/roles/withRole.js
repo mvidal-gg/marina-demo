@@ -1,7 +1,7 @@
-import { useUser } from "../hooks/useUser";
+import { useSelector } from "react-redux";
 
 const withRole = (roles) => (Component) => (props) => {
-  const { userRole } = useUser();
+  const { userRole } = useSelector((state) => state.auth);
   if (userRole && userRole.match(roles)) {
     return <Component {...props} />;
   }

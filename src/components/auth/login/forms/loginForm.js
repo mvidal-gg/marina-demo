@@ -1,22 +1,24 @@
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useUser } from "../../../../common/hooks/useUser";
 import { SubmitButton } from "../../../common/forms/submitButton";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
+import { login } from "../../../../common/features/auth/authSlice"
+import { useDispatch } from "react-redux";
 
 const initialFormValues = { email: "", password: "" };
 
 export const LoginForm = () => {
-  const { login } = useUser();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
+
+  const dispatch = useDispatch();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       const { email, password } = values;
-      await login(email, password);
+      dispatch(login({ email, password }))
       setSubmitting(false);
     } catch (err) {
       if (err.code === "UserNotConfirmedException") {

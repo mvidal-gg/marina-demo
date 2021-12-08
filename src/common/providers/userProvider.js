@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    onLoad();
+    //onLoad();
   }, []);
 
   async function onLoad() {

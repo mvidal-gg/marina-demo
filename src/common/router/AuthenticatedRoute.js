@@ -1,14 +1,16 @@
 import { useSnackbar } from "notistack";
 import React from "react";
+import { useSelector } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-import { useUser } from "../hooks/useUser";
+
 
 export default function AuthenticatedRoute({
   component: Component,
   roles,
   ...rest
 }) {
-  const { isAuthenticated, userRole, isLoading } = useUser();
+  const { isAuthenticated, isLoading, userRole } = useSelector((state) => state.auth);
+
   const { enqueueSnackbar } = useSnackbar();
 
   //user not cheked yet

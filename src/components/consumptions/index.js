@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useUser } from "../../common/hooks/useUser";
 import { Button, CircularProgress } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -10,11 +9,13 @@ import {
 } from "../../common/features/consumptions/consumptionsSlice";
 
 export default function Consumptions() {
-  const { user } = useUser();
-  const userToken = user.signInUserSession.idToken.jwtToken;
   const [selection, setSelection] = useState([]);
 
   const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
+  const userToken = user.signInUserSession.idToken.jwtToken;
+
   const consumptions = useSelector(selectAllConsumptions);
   const consumptionsStatus = useSelector((state) => state.consumptions.status);
   const error = useSelector((state) => state.consumptions.error);

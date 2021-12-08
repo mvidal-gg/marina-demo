@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useUser } from "../hooks/useUser";
+import { useSelector } from "react-redux";
 
 export default function UnauthenticatedRoute({
   component: Component,
   ...rest
 }) {
   
-  const { isAuthenticated, isLoading } = useUser();
+  const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
   
   if (isLoading) {
     return <div>Loading...</div>;

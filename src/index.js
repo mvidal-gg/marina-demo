@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
@@ -10,6 +10,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
 import store from "./common/store/store"
+
 Amplify.configure(config);
 
 const marinaTheme = createTheme({
@@ -19,6 +20,7 @@ const marinaTheme = createTheme({
     },
   },
 });
+
 
 ReactDOM.render(
   <Provider store={store}>

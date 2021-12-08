@@ -15,6 +15,7 @@ import NewSalePoint from "../../components/salePoints/newSalePoint";
 import { Role } from "../roles/role";
 
 export default function Routes() {
+
   return (
     <Switch>
       <UnauthenticatedRoute exact path="/login" component={Login} />

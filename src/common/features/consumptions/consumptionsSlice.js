@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import getConsumptions from "../../../services/consumptionApiService";
+import ConsumptionsService from "../../../services/consumptions.service";
 
 const initialState = {
   consumptions: [],
@@ -10,7 +10,7 @@ const initialState = {
 export const fetchConsumptions = createAsyncThunk(
   "consumptions/getConsumptions",
   async (userToken) => {
-    const response = await getConsumptions(userToken);
+    const response = await ConsumptionsService.getAll(userToken);
     return response;
   }
 );

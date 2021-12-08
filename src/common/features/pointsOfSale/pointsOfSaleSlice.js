@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import getPointsOfSale from "../../../services/pointsOfSaleApiService";
+import PointsOfSaleService from "../../../services/pointsOfSale.service";
 
 const initialState = {
   pointsOfSale: [],
@@ -10,7 +10,7 @@ const initialState = {
 export const fetchPointsOfSale = createAsyncThunk(
   "pointsOfSale/getPointsOfSale",
   async (userToken) => {
-    const response = await getPointsOfSale(userToken);
+    const response = await PointsOfSaleService.getAll(userToken);
     return response;
   }
 );

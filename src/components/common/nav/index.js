@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,24 +13,27 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
-import { useUser } from "../../../common/hooks/useUser";
 import { Role } from "../../../common/roles/role";
 import withRole from "../../../common/roles/withRole";
 import { useHistory } from "react-router-dom";
 import { LogoutOutlined } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import {logout} from "../../../common/features/auth/authSlice"
 
 const drawerWidth = 240;
 
 export default function ResponsiveDrawer(props) {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const history = useHistory();
-  const { logout, userRole } = useUser();
-  const { isAuthenticated } = useUser();
+  const dispatch = useDispatch();
+  const { isAuthenticated, userRole } = useSelector(
+    (state) => state.auth
+  );
 
   async function handleLogout() {
-    await logout();
+    dispatch(logout());
     history.push("/login");
   }
 
