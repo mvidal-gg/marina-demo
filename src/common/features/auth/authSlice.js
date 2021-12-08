@@ -37,9 +37,19 @@ export const confirmSignUp = createAsyncThunk(
 
 export const signUp = createAsyncThunk(
   "auth/signUp",
-  async ({ username, password, phone_number, email, pointOfSale, role }, { rejectWithValue }) => {
+  async (
+    { username, password, phone_number, email, pointOfSale, role },
+    { rejectWithValue }
+  ) => {
     try {
-      return await AuthService.signUp(username, password, phone_number, email, pointOfSale, role);
+      return await AuthService.signUp(
+        username,
+        password,
+        phone_number,
+        email,
+        pointOfSale,
+        role
+      );
     } catch (err) {
       return rejectWithValue(err);
     }
@@ -51,6 +61,28 @@ export const completePassword = createAsyncThunk(
   async ({ email, password, newPassword }, { rejectWithValue }) => {
     try {
       return await AuthService.completePassword(email, password, newPassword);
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const sendConfirmationCode = createAsyncThunk(
+  "auth/sendConfirmationCode",
+  async ({ email }, { rejectWithValue }) => {
+    try {
+      return await AuthService.sendConfirmationCode(email);
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const setNewPassword = createAsyncThunk(
+  "auth/setNewPassword",
+  async ({ email, code, new_password }, { rejectWithValue }) => {
+    try {
+      return await AuthService.setNewPassword(email, code, new_password);
     } catch (err) {
       return rejectWithValue(err);
     }

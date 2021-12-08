@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useUser } from "../../../common/hooks/useUser";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { Box } from "@mui/system";
 import { Button, CircularProgress, TextField } from "@mui/material";
+import { useDispatch } from "react-redux";
+import {sendConfirmationCode, setNewPassword} from "../../../common/features/auth/authSlice"
 
 const initialFormValues = { username: "" };
 const initialFormForgotSubmitValues = {
@@ -23,15 +24,17 @@ const ForgotSubmitSchema = Yup.object().shape({
 });
 
 function ForgotPassword(props) {
-  const { sendConfirmationCode, setNewPassword } = useUser();
   const [isConfirmationSend, setIsConfirmationSend] = useState(false);
   const [username, setUsername] = useState(null);
   const history = useHistory();
 
+  const dispatch = useDispatch()
+
   const handleForgotPassword = async (values, { setSubmitting, setErrors }) => {
     try {
-      setUsername(values.username);
-      await sendConfirmationCode(values.username);
+      setUsername(values.username)
+      const username = values.username
+      await dispatch(sendConfirmationCode({email: username}));
       setSubmitting(false);
       setIsConfirmationSend(true);
     } catch (err) {
@@ -45,7 +48,8 @@ function ForgotPassword(props) {
     { setSubmitting, setErrors }
   ) => {
     try {
-      await setNewPassword(username, values.code, values.password);
+      const {code, password} = values
+      await dispatch(setNewPassword({email: username, code, new_password: password}));
       setSubmitting(false);
       history.push("/login");
     } catch (err) {

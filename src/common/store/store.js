@@ -19,6 +19,7 @@ export default configureStore({
           "auth/logout/pending",
           "auth/signUp/fulfilled",
           "auth/signUp/pending",
+          "auth/setNewPassword/rejected",
           "consumptions/getConsumptions/pending",
           "consumptions/getConsumptions/fulfilled",
           "pointsOfSale/getPointsOfSale/pending",
