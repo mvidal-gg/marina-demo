@@ -49,7 +49,10 @@ const login = (email, password, newPassword) => {
     .then((user) => {
       if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
         Auth.completeNewPassword(user, newPassword);
-        login(user.challengeParam.userAttributes.email, newPassword);
+        return Auth.signIn(
+          user.challengeParam.userAttributes.email,
+          newPassword
+        );
       } else {
         console.log(user);
         return user;

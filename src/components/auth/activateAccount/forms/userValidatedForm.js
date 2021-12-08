@@ -1,17 +1,20 @@
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useUser } from "../../../../common/hooks/useUser";
 import { SubmitButton } from "../../../common/forms/submitButton";
+import { useDispatch } from "react-redux";
+import { login } from "../../../../common/features/auth/authSlice";
 
 const initialFormValues = { password: "", password2: "" };
 
 export const UserValidatedForm = ({email, codeTemp, setIsUserValidated}) => {
-  const { login } = useUser();
+
+  const dispatch = useDispatch()
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      await login(email, codeTemp, values.password);
+      const password = values.password
+      await dispatch(login({email, password: codeTemp, newPassword: password})).unwrap()
       setSubmitting(false);
     } catch (err) {
       console.log(err);

@@ -1,22 +1,36 @@
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useUser } from "../../../../common/hooks/useUser";
 import { SubmitButton } from "../../../common/forms/submitButton";
 import { useSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
+import { confirmSignUp } from "../../../../common/features/auth/authSlice";
 
 const initialFormValues = { email: "", code: "" };
 
-export const UserNotValidatedForm = ({ setIsUserValidated, setEmail, setCodeTemp }) => {
-  const { confirmSignUp } = useUser();
+export const UserNotValidatedForm = ({
+  setIsUserValidated,
+  setEmail,
+  setCodeTemp,
+}) => {
   const { enqueueSnackbar } = useSnackbar();
+
+  const dispatch = useDispatch();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      setEmail(values.email);
-      var code = Math.random().toString(36).slice(-8);
+      const email_value = values.email;
+      const code_value = values.code;
+      setEmail(email_value);
+      let code = Math.random().toString(36).slice(-8);
       setCodeTemp(code);
-      await confirmSignUp(values.email, values.code, code);
+      await dispatch(
+        confirmSignUp({
+          username: email_value,
+          code: code_value,
+          codeTemp: code,
+        })
+      ).unwrap();
       setSubmitting(false);
       enqueueSnackbar("Usuario verificado. Introduce una nueva contraseña", {
         variant: "success",

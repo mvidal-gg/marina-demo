@@ -4,7 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { SubmitButton } from "../../../common/forms/submitButton";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import { login } from "../../../../common/features/auth/authSlice"
+import { login } from "../../../../common/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 
 const initialFormValues = { email: "", password: "" };
@@ -18,7 +18,7 @@ export const LoginForm = () => {
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       const { email, password } = values;
-      dispatch(login({ email, password }))
+      await dispatch(login({ email, password })).unwrap();
       setSubmitting(false);
     } catch (err) {
       if (err.code === "UserNotConfirmedException") {

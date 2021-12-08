@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useUser } from "../../common/hooks/useUser";
 import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { SubmitButton } from "../common/forms/submitButton";
-
 import { Box } from "@mui/system";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { signUp } from "../../common/features/auth/authSlice";
 import {
   fetchPointsOfSale,
   selectAllPointsOfSale,
@@ -22,14 +21,15 @@ const initialFormValues = {
 };
 
 export default function NewUser() {
-  const { signUp, user } = useUser();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const [pointOfSale, setPointOfSale] = useState("");
   const [role, setRole] = useState("");
-  const userToken = user.signInUserSession.idToken.jwtToken;
 
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const userToken = user.signInUserSession.idToken.jwtToken;
+
   const pointsOfSale = useSelector(selectAllPointsOfSale);
   const pointsOfSaleStatus = useSelector((state) => state.pointsOfSale.status);
   const error = useSelector((state) => state.pointsOfSale.error);
@@ -48,17 +48,13 @@ export default function NewUser() {
     setRole(event.target.value);
   };
 
-  //TODO: Cuando peta la creacion de usuario te sale como si se hubiera creado bien
+  //TODO: Revisar cuando peta la creación de usuario que parece que no haya petado...
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       var password = Math.random().toString(36).slice(-8);
-      await signUp(
-        values.email,
-        password,
-        values.phone_number,
-        values.email,
-        pointOfSale,
-        role
+      const { email, phone_number } = values;
+      dispatch(
+        signUp({ username: email, password, phone_number, email, pointOfSale, role })
       );
       setSubmitting(false);
       enqueueSnackbar("Usuario creado correctamente", {

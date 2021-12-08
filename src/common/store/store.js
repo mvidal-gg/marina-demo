@@ -12,7 +12,18 @@ export default configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["auth/setUser"],
+        ignoredActions: [
+          "auth/setUser",
+          "auth/login/fulfilled",
+          "auth/login/rejected",
+          "auth/logout/pending",
+          "auth/signUp/fulfilled",
+          "auth/signUp/pending",
+          "consumptions/getConsumptions/pending",
+          "consumptions/getConsumptions/fulfilled",
+          "pointsOfSale/getPointsOfSale/pending",
+          "pointsOfSale/getPointsOfSale/fulfilled"
+        ],
       },
     }),
 });

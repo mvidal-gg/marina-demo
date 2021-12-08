@@ -33,7 +33,7 @@ export default function ResponsiveDrawer(props) {
   );
 
   async function handleLogout() {
-    dispatch(logout());
+    await dispatch(logout());
     history.push("/login");
   }
 
