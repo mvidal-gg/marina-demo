@@ -1,7 +1,7 @@
 import { Auth } from "aws-amplify";
 
 const confirmSignUp = (username, code, codeTemp) => {
-  Auth.confirmSignUp(username, code, {
+  return Auth.confirmSignUp(username, code, {
     clientMetadata: { codeTemp: codeTemp },
   })
     .then((user) => {
@@ -10,7 +10,7 @@ const confirmSignUp = (username, code, codeTemp) => {
     })
     .catch((err) => {
       console.log("error confirming user:", err);
-      return false;
+      throw err;
     });
 };
 

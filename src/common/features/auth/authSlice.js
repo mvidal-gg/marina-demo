@@ -144,7 +144,11 @@ const authSlice = createSlice({
         state.userRole = null;
       })
       .addCase(confirmSignUp.rejected, (state, action) => {
-        state.error = action.payload.error;
+        if (action.payload) {
+          state.error = action.payload.error;
+        } else {
+          state.error = action.error.message;
+        }
       });
   },
 });

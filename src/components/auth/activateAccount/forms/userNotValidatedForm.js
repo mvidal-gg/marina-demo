@@ -56,6 +56,7 @@ export const UserNotValidatedForm = ({
             as={TextField}
             type="email"
             name="email"
+            label="Email"
             onChange={handleChange}
             value={values.email}
             fullWidth
@@ -67,6 +68,7 @@ export const UserNotValidatedForm = ({
             as={TextField}
             type="string"
             name="code"
+            label="Código de activación"
             onChange={handleChange}
             value={values.code || ""}
             fullWidth
