@@ -22,7 +22,7 @@ const signUp = (
   pointOfSale = "",
   role = ""
 ) => {
-  Auth.signUp({
+  return Auth.signUp({
     username,
     password,
     attributes: {
@@ -37,8 +37,7 @@ const signUp = (
       return true;
     })
     .catch((err) => {
-      console.log("error signing up:", err);
-      return false;
+      throw err;
     });
 };
 

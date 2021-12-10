@@ -32,7 +32,8 @@ export default function NewUser() {
 
   const pointsOfSale = useSelector(selectAllPointsOfSale);
   const pointsOfSaleStatus = useSelector((state) => state.pointsOfSale.status);
-  const error = useSelector((state) => state.pointsOfSale.error);
+
+  const error = useSelector((state) => state.auth.error);
 
   useEffect(() => {
     if (pointsOfSaleStatus === "idle") {
@@ -49,11 +50,11 @@ export default function NewUser() {
   };
 
   //TODO: Revisar cuando peta la creación de usuario que parece que no haya petado...
-  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+  const handleSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
     try {
       var password = Math.random().toString(36).slice(-8);
       const { email, phone_number } = values;
-      dispatch(
+      await dispatch(
         signUp({
           username: email,
           password,
@@ -62,19 +63,20 @@ export default function NewUser() {
           pointOfSale,
           role,
         })
-      );
-      setSubmitting(false);
+      ).unwrap();
       enqueueSnackbar("Usuario creado correctamente", {
         variant: "success",
       });
-      /*history.push("/users");*/
-    } catch (err) {
       setSubmitting(false);
-      setErrors({ phone_number: err.message });
+    } catch (err) {
       enqueueSnackbar(err.message, {
         variant: "error",
       });
+      resetForm({})
+      setSubmitting(false);
     }
+
+    /*history.push("/users");*/
   };
 
   return (

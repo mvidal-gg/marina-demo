@@ -126,6 +126,16 @@ const authSlice = createSlice({
         state.userRole = null;
         state.user = null;
       })
+      .addCase(signUp.fulfilled, (state, action) => {
+        state.error = null;
+      })
+      .addCase(signUp.rejected, (state, action) => {
+        if (action.payload) {
+          state.error = action.payload.error;
+        } else {
+          state.error = action.error.message;
+        }
+      })
       .addCase(confirmSignUp.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = false;
