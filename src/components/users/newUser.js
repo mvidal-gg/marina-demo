@@ -54,16 +54,23 @@ export default function NewUser() {
       var password = Math.random().toString(36).slice(-8);
       const { email, phone_number } = values;
       dispatch(
-        signUp({ username: email, password, phone_number, email, pointOfSale, role })
+        signUp({
+          username: email,
+          password,
+          phone_number,
+          email,
+          pointOfSale,
+          role,
+        })
       );
       setSubmitting(false);
       enqueueSnackbar("Usuario creado correctamente", {
         variant: "success",
       });
-      history.push("/users");
+      /*history.push("/users");*/
     } catch (err) {
       setSubmitting(false);
-      setErrors({ password: err.message });
+      setErrors({ phone_number: err.message });
       enqueueSnackbar(err.message, {
         variant: "error",
       });
@@ -102,30 +109,6 @@ export default function NewUser() {
                 Marina
               </MenuItem>
             </Field>
-            <ErrorMessage name="email" component="div" />
-            <Field
-              as={TextField}
-              type="email"
-              name="email"
-              label="email"
-              onChange={handleChange}
-              value={values.email}
-              fullWidth
-              autoComplete="on"
-              size="small"
-            />
-            <ErrorMessage name="phone_number" component="div" />
-            <Field
-              as={TextField}
-              type="tel"
-              name="phone_number"
-              label="teléfono"
-              onChange={handleChange}
-              value={values.phone_number}
-              fullWidth
-              autoComplete="on"
-              size="small"
-            />
             {role === "kiosko" && (
               <>
                 <InputLabel id="point-of-sale-label">Punto de venta</InputLabel>
@@ -147,6 +130,31 @@ export default function NewUser() {
                 </Field>
               </>
             )}
+            <Field
+              as={TextField}
+              type="email"
+              name="email"
+              label="email"
+              onChange={handleChange}
+              value={values.email}
+              fullWidth
+              autoComplete="on"
+              size="small"
+            />
+            <ErrorMessage name="email" component="div" />
+            <Field
+              as={TextField}
+              type="tel"
+              name="phone_number"
+              label="teléfono"
+              onChange={handleChange}
+              value={values.phone_number}
+              fullWidth
+              autoComplete="on"
+              size="small"
+            />
+            <ErrorMessage name="phone_number" component="div" />
+
             <SubmitButton
               text="Crear usuario"
               isValid={isValid}
