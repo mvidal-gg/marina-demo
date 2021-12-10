@@ -26,9 +26,8 @@ export const LoginForm = () => {
           variant: "error",
         });
         history.push("/activate-account");
-      } else {
-        console.log(err);
-        setErrors({ password: err.message });
+      } else  if (err.code === "NotAuthorizedException"){
+        setErrors({ password: "Usuario y/o contraseña incorrectos" });
       }
     }
   };
@@ -47,6 +46,7 @@ export const LoginForm = () => {
             as={TextField}
             type="email"
             name="email"
+            label="Email"
             onChange={handleChange}
             value={values.email}
             fullWidth
@@ -58,6 +58,7 @@ export const LoginForm = () => {
             as={TextField}
             type="password"
             name="password"
+            label="Contraseña"
             onChange={handleChange}
             value={values.password}
             fullWidth
