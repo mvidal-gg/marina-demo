@@ -11,14 +11,13 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+import { Link, useHistory, matchPath } from "react-router-dom";
 import { useLocation } from "react-router";
 import { Role } from "../../../common/roles/role";
 import withRole from "../../../common/roles/withRole";
-import { useHistory } from "react-router-dom";
 import { LogoutOutlined } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import {logout} from "../../../common/features/auth/authSlice"
+import { logout } from "../../../common/features/auth/authSlice";
 
 const drawerWidth = 240;
 
@@ -28,9 +27,7 @@ export default function ResponsiveDrawer(props) {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isAuthenticated, userRole } = useSelector(
-    (state) => state.auth
-  );
+  const { isAuthenticated, userRole } = useSelector((state) => state.auth);
 
   async function handleLogout() {
     await dispatch(logout());
@@ -41,16 +38,16 @@ export default function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  let CustomListItem = ({ to, text }) => (
-    <ListItem
-      button
-      component={Link}
-      to={to}
-      selected={to === location.pathname}
-    >
-      <ListItemText primary={text} />
-    </ListItem>
-  );
+  let CustomListItem = ({ to, text }) => {
+    const match = matchPath(location.pathname, {
+      path: to,
+    });
+    return (
+      <ListItem button component={Link} to={to} selected={match != null}>
+        <ListItemText primary={text} />
+      </ListItem>
+    );
+  };
 
   const RestrictedUsersButton = withRole([Role.Marina])(CustomListItem);
 

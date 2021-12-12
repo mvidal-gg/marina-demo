@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -15,7 +16,7 @@ export default function AuthenticatedRoute({
 
   //user not cheked yet
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <CircularProgress size={24} />;
   }
   return (
     <Route
