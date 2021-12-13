@@ -50,7 +50,7 @@ export default function NewConsumption() {
 
   return (
     <>
-      <h3> NewConsumption component. Acceso privado</h3>
+      <h3>Nuevo consumo</h3>
       <Formik
         initialValues={initialFormValues}
         onSubmit={handleSubmit}

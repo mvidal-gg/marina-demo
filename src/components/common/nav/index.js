@@ -49,7 +49,7 @@ export default function ResponsiveDrawer(props) {
     );
   };
 
-  const RestrictedUsersButton = withRole([Role.Marina])(CustomListItem);
+  const RestrictedMarinaButton = withRole([Role.Marina])(CustomListItem);
 
   const drawer = (
     <div>
@@ -57,8 +57,9 @@ export default function ResponsiveDrawer(props) {
       <Divider />
       <List onClick={handleDrawerToggle}>
         <CustomListItem to="/consumptions" text="Consumos" />
-        <RestrictedUsersButton to="/users" text="Usuarios" />
-        <CustomListItem to="/points-of-sale" text="Puntos de venta" />
+        <RestrictedMarinaButton to="/users" text="Usuarios" />
+        <RestrictedMarinaButton to="/points-of-sale" text="Puntos de venta" />
+
         <Box m={2}>
           {userRole}
           <IconButton onClick={handleLogout} aria-label="logout">
