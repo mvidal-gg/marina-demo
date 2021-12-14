@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  CircularProgress,
-  InputLabel,
-  MenuItem,
-  Select,
-  FormControl
-} from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,14 +7,10 @@ import {
   fetchConsumptions,
   selectAllConsumptions,
 } from "../../common/features/consumptions/consumptionsSlice";
-import {
-  fetchPointsOfSale,
-  selectAllPointsOfSale,
-} from "../../common/features/pointsOfSale/pointsOfSaleSlice";
-import { Field, Form, Formik } from "formik";
-import { Box } from "@mui/system";
+
 import withRole from "../../common/roles/withRole";
 import { Role } from "../../common/roles/role";
+import { PointsOfSaleFilter } from "../../components/consumptions/PointsOfSaleFilter";
 
 export default function Consumptions() {
   const [selection, setSelection] = useState([]);
@@ -35,16 +24,7 @@ export default function Consumptions() {
   const consumptionsStatus = useSelector((state) => state.consumptions.status);
   const error = useSelector((state) => state.consumptions.error);
 
-  const pointsOfSale = useSelector(selectAllPointsOfSale);
-  const pointsOfSaleStatus = useSelector((state) => state.pointsOfSale.status);
-
   const [pointOfSale, setPointOfSale] = useState("");
-
-  useEffect(() => {
-    if (pointsOfSaleStatus === "idle") {
-      dispatch(fetchPointsOfSale(userToken));
-    }
-  }, [pointsOfSaleStatus, userToken, dispatch]);
 
   useEffect(() => {
     if (consumptionsStatus === "idle") {
@@ -73,41 +53,12 @@ export default function Consumptions() {
     alert("Aquí daríamos de baja a las filas: " + selection);
   };
 
-  const handleSelectPointOfSale = (evt) => {
-    setPointOfSale(evt.target.value);
-    alert("aquí filtramos por punto de venta => " + evt.target.value);
-  };
-
-  let Filter = () => {
-    return (
-      <Box mb={5} >
-        <Formik>
-          {() => (
-            <Box component={Form} autoComplete="off">
-              <FormControl sx={{ width: 250 }}>
-                <InputLabel id="point-of-sale-label">Punto de venta</InputLabel>
-                <Field
-                  as={Select}
-                  labelId="point-of-sale-label"
-                  id="point-of-sale"
-                  label="Punto de venta"
-                  value={pointOfSale}
-                  onChange={handleSelectPointOfSale}
-                  size="small"
-                >
-                  {pointsOfSale.map((element) => (
-                    <MenuItem key={element.id} value={element.id}>
-                      {element.label}
-                    </MenuItem>
-                  ))}
-                </Field>
-              </FormControl>
-            </Box>
-          )}
-        </Formik>
-      </Box>
-    );
-  };
+  let Filter = () => (
+    <PointsOfSaleFilter
+      pointOfSale={pointOfSale}
+      setPointOfSale={setPointOfSale}
+    />
+  );
 
   const RestrictedFilter = withRole([Role.Marina])(Filter);
 
