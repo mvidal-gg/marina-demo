@@ -5,6 +5,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  FormControl
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
@@ -13,6 +14,10 @@ import {
   fetchConsumptions,
   selectAllConsumptions,
 } from "../../common/features/consumptions/consumptionsSlice";
+import {
+  fetchPointsOfSale,
+  selectAllPointsOfSale,
+} from "../../common/features/pointsOfSale/pointsOfSaleSlice";
 import { Field, Form, Formik } from "formik";
 import { Box } from "@mui/system";
 import withRole from "../../common/roles/withRole";
@@ -30,6 +35,23 @@ export default function Consumptions() {
   const consumptionsStatus = useSelector((state) => state.consumptions.status);
   const error = useSelector((state) => state.consumptions.error);
 
+  const pointsOfSale = useSelector(selectAllPointsOfSale);
+  const pointsOfSaleStatus = useSelector((state) => state.pointsOfSale.status);
+
+  const [pointOfSale, setPointOfSale] = useState("");
+
+  useEffect(() => {
+    if (pointsOfSaleStatus === "idle") {
+      dispatch(fetchPointsOfSale(userToken));
+    }
+  }, [pointsOfSaleStatus, userToken, dispatch]);
+
+  useEffect(() => {
+    if (consumptionsStatus === "idle") {
+      dispatch(fetchConsumptions(userToken));
+    }
+  }, [consumptionsStatus, userToken, dispatch]);
+
   const columns = [
     { title: "id", field: "id" },
     { title: "idPublication", field: "idPublication" },
@@ -43,7 +65,7 @@ export default function Consumptions() {
     { title: "update", field: "update" },
   ];
 
-  const handleSelection = (newSelection) => {
+  const handleDataSelection = (newSelection) => {
     setSelection(newSelection);
   };
 
@@ -52,41 +74,34 @@ export default function Consumptions() {
   };
 
   const handleSelectPointOfSale = (evt) => {
+    setPointOfSale(evt.target.value);
     alert("aquí filtramos por punto de venta => " + evt.target.value);
   };
 
-  useEffect(() => {
-    if (consumptionsStatus === "idle") {
-      dispatch(fetchConsumptions(userToken));
-    }
-  }, [consumptionsStatus, userToken, dispatch]);
-
   let Filter = () => {
     return (
-      <Box mb={5}>
+      <Box mb={5} >
         <Formik>
-          {({ handleChange, setFieldValue, isSubmitting, values, isValid }) => (
-            <Box
-              component={Form}
-              autoComplete="off"
-            >
-              <InputLabel id="point-of-sale">Punto de venta</InputLabel>
-              <Field
-                as={Select}
-                labelId="point-of-sale-label"
-                id="role"
-                label="Punto de venta"
-                value=""
-                onChange={handleSelectPointOfSale}
-                size="small"
-              >
-                <MenuItem key="p1" value="punto venta 1">
-                  Punto venta 1
-                </MenuItem>
-                <MenuItem key="p2" value="punto venta 2">
-                  Punto venta 2
-                </MenuItem>
-              </Field>
+          {() => (
+            <Box component={Form} autoComplete="off">
+              <FormControl sx={{ width: 250 }}>
+                <InputLabel id="point-of-sale-label">Punto de venta</InputLabel>
+                <Field
+                  as={Select}
+                  labelId="point-of-sale-label"
+                  id="point-of-sale"
+                  label="Punto de venta"
+                  value={pointOfSale}
+                  onChange={handleSelectPointOfSale}
+                  size="small"
+                >
+                  {pointsOfSale.map((element) => (
+                    <MenuItem key={element.id} value={element.id}>
+                      {element.label}
+                    </MenuItem>
+                  ))}
+                </Field>
+              </FormControl>
             </Box>
           )}
         </Formik>
@@ -108,7 +123,7 @@ export default function Consumptions() {
           pageSize={5}
           rowsPerPageOptions={[5]}
           checkboxSelection
-          onSelectionModelChange={handleSelection}
+          onSelectionModelChange={handleDataSelection}
         />
       </>
     );

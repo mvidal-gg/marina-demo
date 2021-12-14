@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { ForgotPasswordForm } from "./forms/forgotPasswordForm";
-import { ForgotPasswordSubmitForm } from "./forms/forgotPasswordSubmitForm";
+import { ForgotPasswordForm } from "../../../components/auth/forgotPassword/forms/forgotPasswordForm";
+import { ForgotPasswordSubmitForm } from "../../../components/auth/forgotPassword/forms/forgotPasswordSubmitForm";
 
 function ForgotPassword(props) {
   const [isConfirmationSend, setIsConfirmationSend] = useState(false);

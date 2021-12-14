@@ -1,17 +1,17 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Login from "../../components/auth/login";
-import NotFound from "../../components/notFound/NotFound";
+import Login from "../../views/auth/login";
+import NotFound from "../../views/notFound/NotFound";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
-import ForgotPassword from "../../components/auth/forgotPassword";
-import ActivateAccount from "../../components/auth/activateAccount";
-import Users from "../../components/users";
-import Consumptions from "../../components/consumptions";
-import SalePoints from "../../components/salePoints";
-import NewUser from "../../components/users/newUser";
-import NewConsumption from "../../components/consumptions/newConsumption";
-import NewSalePoint from "../../components/salePoints/newSalePoint";
+import ForgotPassword from "../../views/auth/forgotPassword";
+import ActivateAccount from "../../views/auth/activateAccount";
+import Users from "../../views/users";
+import Consumptions from "../../views/consumptions";
+import SalePoints from "../../views/salePoints";
+import NewUser from "../../views/users/newUser";
+import NewConsumption from "../../views/consumptions/newConsumption";
+import NewSalePoint from "../../views/salePoints/newSalePoint";
 import { Role } from "../roles/role";
 
 export default function Routes() {

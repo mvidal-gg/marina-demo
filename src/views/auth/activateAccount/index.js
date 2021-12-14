@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { UserValidatedForm } from "./forms/userValidatedForm";
-import { UserNotValidatedForm } from "./forms/userNotValidatedForm";
+import { UserValidatedForm } from "../../../components/auth/activateAccount/forms/userValidatedForm";
+import { UserNotValidatedForm } from "../../../components/auth/activateAccount/forms/userNotValidatedForm";
 
 function ActivateAccount() {
   const [isUserValidated, setIsUserValidated] = useState(false);

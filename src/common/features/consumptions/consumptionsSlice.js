@@ -15,6 +15,7 @@ export const fetchConsumptions = createAsyncThunk(
   }
 );
 
+
 const consumptionsSlice = createSlice({
   name: "consumptions",
   initialState,

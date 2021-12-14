@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { SubmitButton } from "../../../common/forms/submitButton";
+import { SubmitButton } from "../../../../components/common/forms/submitButton";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { login } from "../../../../common/features/auth/authSlice";
