@@ -5,9 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchPointsOfSale,
   selectAllPointsOfSale,
+  setCurrent,
 } from "../../common/features/pointsOfSale/pointsOfSaleSlice";
 
-export const PointsOfSaleFilter = ({ pointOfSale, setPointOfSale }) => {
+import { fetchConsumptions } from "../../common/features/consumptions/consumptionsSlice";
+
+export const PointsOfSaleFilter = ({ pointOfSale }) => {
   const { user } = useSelector((state) => state.auth);
   const userToken = user.signInUserSession.idToken.jwtToken;
 
@@ -22,8 +25,9 @@ export const PointsOfSaleFilter = ({ pointOfSale, setPointOfSale }) => {
   }, [pointsOfSaleStatus, userToken, dispatch]);
 
   const handleSelectPointOfSale = (evt) => {
-    setPointOfSale(evt.target.value);
-    alert("aquí filtramos por punto de venta => " + evt.target.value);
+    const evtValue = evt.target.value;
+    dispatch(setCurrent(evtValue));
+    dispatch(fetchConsumptions({ userToken, pointOfSale: evtValue }));
   };
 
   return (

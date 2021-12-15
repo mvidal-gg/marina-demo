@@ -24,13 +24,13 @@ export default function Consumptions() {
   const consumptionsStatus = useSelector((state) => state.consumptions.status);
   const error = useSelector((state) => state.consumptions.error);
 
-  const [pointOfSale, setPointOfSale] = useState("");
-
+  const pointOfSale = useSelector((state) => state.pointsOfSale.current);
+ 
   useEffect(() => {
     if (consumptionsStatus === "idle") {
-      dispatch(fetchConsumptions(userToken));
+      dispatch(fetchConsumptions({userToken, pointOfSale}));
     }
-  }, [consumptionsStatus, userToken, dispatch]);
+  }, [consumptionsStatus, userToken, pointOfSale, dispatch]);
 
   const columns = [
     { title: "id", field: "id" },
@@ -56,7 +56,6 @@ export default function Consumptions() {
   let Filter = () => (
     <PointsOfSaleFilter
       pointOfSale={pointOfSale}
-      setPointOfSale={setPointOfSale}
     />
   );
 

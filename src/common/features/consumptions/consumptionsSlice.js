@@ -9,8 +9,8 @@ const initialState = {
 
 export const fetchConsumptions = createAsyncThunk(
   "consumptions/getConsumptions",
-  async (userToken) => {
-    const response = await ConsumptionsService.getAll(userToken);
+  async (userToken, pointOfSale) => {
+    const response = await ConsumptionsService.getAll(userToken, pointOfSale);
     return response;
   }
 );
@@ -28,7 +28,7 @@ const consumptionsSlice = createSlice({
       .addCase(fetchConsumptions.fulfilled, (state, action) => {
         state.status = "succeeded";
         // Add any fetched consumptions to the array
-        state.consumptions = state.consumptions.concat(action.payload);
+        state.consumptions = action.payload;
       })
       .addCase(fetchConsumptions.rejected, (state, action) => {
         state.status = "failed";

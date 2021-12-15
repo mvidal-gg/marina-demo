@@ -3,6 +3,7 @@ import PointsOfSaleService from "../../../services/pointsOfSale.service";
 
 const initialState = {
   pointsOfSale: [],
+  current: "",
   status: "idle",
   error: null,
 };
@@ -18,7 +19,9 @@ export const fetchPointsOfSale = createAsyncThunk(
 const pointsOfSaleSlice = createSlice({
   name: "pointsOfSale",
   initialState,
-  reducers: {},
+  reducers: { setCurrent: (state, action) => {
+    state.current = action.payload;
+  },},
   extraReducers(builder) {
     builder
       .addCase(fetchPointsOfSale.pending, (state, action) => {
@@ -36,6 +39,8 @@ const pointsOfSaleSlice = createSlice({
 });
 
 export default pointsOfSaleSlice.reducer;
+
+export const { setCurrent } = pointsOfSaleSlice.actions;
 
 export const selectAllPointsOfSale = (state) => state.pointsOfSale.pointsOfSale;
 

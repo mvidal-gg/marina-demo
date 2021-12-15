@@ -24,7 +24,8 @@ export default configureStore({
           "consumptions/getConsumptions/pending",
           "consumptions/getConsumptions/fulfilled",
           "pointsOfSale/getPointsOfSale/pending",
-          "pointsOfSale/getPointsOfSale/fulfilled"
+          "pointsOfSale/getPointsOfSale/fulfilled",
+          "pointsOfSale/setCurrent"
         ],
       },
     }),
