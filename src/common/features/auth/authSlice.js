@@ -8,7 +8,6 @@ const initialState = {
     token: null
   },
   isAuthenticated: false,
-  userRole: null,
   isLoading: true,
   error: null,
 };
