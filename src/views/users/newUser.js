@@ -34,7 +34,7 @@ export default function NewUser() {
   const pointsOfSale = useSelector(selectAllPointsOfSale);
   const pointsOfSaleStatus = useSelector((state) => state.pointsOfSale.status);
 
-  const error = useSelector((state) => state.auth.error);
+  //const error = useSelector((state) => state.auth.error);
 
   useEffect(() => {
     if (pointsOfSaleStatus === "idle") {

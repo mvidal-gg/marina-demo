@@ -5,8 +5,6 @@ import { useSnackbar } from "notistack";
 import { NewConsumptionForm } from "../../components/consumptions/forms/newConsumptionForm";
 import { DataGrid } from "@mui/x-data-grid";
 
-const pointOfSale = "";
-
 export default function NewConsumption() {
   const [cardNumber, setCardNumber] = useState("");
   const [error, setError] = useState(null);
@@ -23,11 +21,10 @@ export default function NewConsumption() {
     { title: "idPublication", field: "idPublication" },
   ];
 
-  const [selection, setSelection] = useState([]);
-
   const [services, setServices] = useState([]);
+
   const handleDataSelection = (newSelection) => {
-    setSelection(newSelection);
+    //todo
   };
 
   useEffect(() => {
