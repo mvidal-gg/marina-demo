@@ -23,11 +23,12 @@ export default function NewConsumption() {
     { title: "idPublication", field: "idPublication" },
   ];
 
+  const [selection, setSelection] = useState([]);
+
   const [services, setServices] = useState([]);
   const handleDataSelection = (newSelection) => {
     setSelection(newSelection);
   };
-  const [selection, setSelection] = useState([]);
 
   useEffect(() => {
     qs.cardNumber && setCardNumber(qs.cardNumber);

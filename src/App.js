@@ -15,10 +15,11 @@ function App() {
   useEffect(() => {
     Auth.currentAuthenticatedUser()
       .then((user) => {
-        dispatch(setUser(user));
+        let serializedUser = JSON.stringify(user)
+        dispatch(setUser(serializedUser));
       })
       .catch((err) => dispatch(clearUser()));
-  }, []);
+  }, [dispatch]);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
