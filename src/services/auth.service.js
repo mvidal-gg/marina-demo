@@ -54,7 +54,7 @@ const login = (email, password, newPassword) => {
         );
       } else {
         console.log(user);
-        return user;
+        return JSON.stringify(user);
       }
     })
     .catch((err) => {
@@ -69,7 +69,7 @@ const login = (email, password, newPassword) => {
 };
 
 const logout = () => {
-  Auth.signOut().then((data) => data);
+  Auth.signOut().then((data) => JSON.stringify(data));
 };
 
 const sendConfirmationCode = (email) => {

@@ -2,7 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import AuthService from "../../../services/auth.service";
 
 const initialState = {
-  user: null,
+  user: {
+    email: null,
+    role: null,
+    token: null
+  },
   isAuthenticated: false,
   userRole: null,
   isLoading: true,
@@ -94,15 +98,22 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
-      state.userRole =
-        action.payload.signInUserSession.idToken.payload["cognito:groups"][0];
+      let payload = JSON.parse(action.payload)
+      state.user = {
+        email:
+        payload.signInUserSession.idToken.payload["cognito:username"],
+        role: payload.signInUserSession.idToken.payload["custom:role"],
+        token: payload.signInUserSession.idToken.jwtToken,
+      };
       state.isAuthenticated = true;
       state.isLoading = false;
     },
     clearUser: (state) => {
-      state.user = null;
-      state.userRole = null;
+      state.user = {
+        email: null,
+        role: null,
+        token: null
+      };
       state.isAuthenticated = false;
       state.isLoading = false;
     },
@@ -110,21 +121,30 @@ const authSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(login.fulfilled, (state, action) => {
+        let payload = JSON.parse(action.payload)
+        state.user = {
+          email:
+          payload.signInUserSession.idToken.payload[
+              "cognito:username"
+            ],
+          role: payload.signInUserSession.idToken.payload["custom:role"],
+          token: payload.signInUserSession.idToken.jwtToken,
+        };
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.user = action.payload;
         state.error = null;
-        state.userRole =
-          action.payload.signInUserSession.idToken.payload["cognito:groups"][0];
       })
       .addCase(login.rejected, (state, action) => {
         state.error = action.payload.error;
       })
       .addCase(logout.fulfilled, (state, action) => {
+        state.user = {
+          email: null,
+          role: null,
+          token: null
+        };
         state.isLoading = false;
-        state.isAuthenticated = false;
-        state.userRole = null;
-        state.user = null;
+        state.isAuthenticated = false;        
       })
       .addCase(signUp.fulfilled, (state, action) => {
         state.error = null;
@@ -141,7 +161,6 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.user = null;
         state.error = null;
-        state.userRole = null;
       })
       .addCase(confirmSignUp.rejected, (state, action) => {
         if (action.payload) {

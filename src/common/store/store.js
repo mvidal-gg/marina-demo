@@ -18,25 +18,5 @@ const rootReducer = (state, action) => {
 
 export default configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [
-          "auth/setUser",
-          "auth/login/fulfilled",
-          "auth/login/rejected",
-          "auth/logout/pending",
-          "auth/signUp/fulfilled",
-          "auth/signUp/pending",
-          "auth/signUp/rejected",
-          "auth/setNewPassword/rejected",
-          "consumptions/getConsumptions/pending",
-          "consumptions/getConsumptions/fulfilled",
-          "consumptions/getConsumptions/rejected",
-          "pointsOfSale/getPointsOfSale/pending",
-          "pointsOfSale/getPointsOfSale/fulfilled",
-          "pointsOfSale/setCurrent",
-        ],
-      },
-    }),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

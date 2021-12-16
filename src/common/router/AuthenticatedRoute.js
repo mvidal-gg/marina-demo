@@ -10,7 +10,8 @@ export default function AuthenticatedRoute({
   roles,
   ...rest
 }) {
-  const { isAuthenticated, isLoading, userRole } = useSelector((state) => state.auth);
+  const { isAuthenticated, isLoading, user } = useSelector((state) => state.auth);
+  const { role: userRole } = user
 
   const { enqueueSnackbar } = useSnackbar();
 

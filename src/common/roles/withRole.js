@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 
 const withRole = (roles) => (Component) => (props) => {
-  const { userRole } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
+  const { role: userRole } = user;
   if (userRole && userRole.match(roles)) {
     return <Component {...props} />;
   }

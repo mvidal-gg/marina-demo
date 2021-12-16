@@ -11,8 +11,9 @@ import {
 import { fetchConsumptions } from "../../common/features/consumptions/consumptionsSlice";
 
 export const PointsOfSaleFilter = ({ pointOfSale }) => {
+
   const { user } = useSelector((state) => state.auth);
-  const userToken = user.signInUserSession.idToken.jwtToken;
+  const { token: userToken } = user
 
   const pointsOfSale = useSelector(selectAllPointsOfSale);
   const pointsOfSaleStatus = useSelector((state) => state.pointsOfSale.status);

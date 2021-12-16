@@ -1,4 +1,11 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import DatePicker from "../../common/forms/datepicker";
 import { SubmitButton } from "../../common/forms/submitButton";
@@ -18,7 +25,7 @@ const initialFormValues = {
 
 export const NewConsumptionForm = ({ cardNumber, setServices }) => {
   const { user } = useSelector((state) => state.auth);
-  const userToken = user.signInUserSession.idToken.jwtToken;
+  const { token: userToken } = user;
   const [selectedPOS, setSelectedPOS] = useState("");
 
   const pointsOfSale = useSelector(selectAllPointsOfSale);
@@ -33,9 +40,13 @@ export const NewConsumptionForm = ({ cardNumber, setServices }) => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     //ToDo
-    const {card_number, edition_date} = values;
+    const { card_number, edition_date } = values;
     alert(JSON.stringify(values));
-    const services = await servicesService.getAll({token:userToken, numCard:card_number, dateEdition:edition_date});
+    const services = await servicesService.getAll({
+      token: userToken,
+      numCard: card_number,
+      dateEdition: edition_date,
+    });
     setServices(services);
   };
 

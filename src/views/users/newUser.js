@@ -27,8 +27,9 @@ export default function NewUser() {
   const [role, setRole] = useState("");
 
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  const userToken = user.signInUserSession.idToken.jwtToken;
+
+  const {  user } = useSelector((state) => state.auth);
+  const { token : userToken } = user
 
   const pointsOfSale = useSelector(selectAllPointsOfSale);
   const pointsOfSaleStatus = useSelector((state) => state.pointsOfSale.status);
@@ -75,8 +76,7 @@ export default function NewUser() {
       resetForm({})
       setSubmitting(false);
     }
-
-    /*history.push("/users");*/
+    history.push("/users");
   };
 
   return (

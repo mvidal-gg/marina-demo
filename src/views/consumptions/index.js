@@ -17,8 +17,7 @@ export default function Consumptions() {
 
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.auth);
-  const userToken = user.signInUserSession.idToken.jwtToken;
+  const { token: userToken } = useSelector((state) => state.auth.user);
 
   const consumptions = useSelector(selectAllConsumptions);
   const consumptionsStatus = useSelector((state) => state.consumptions.status);

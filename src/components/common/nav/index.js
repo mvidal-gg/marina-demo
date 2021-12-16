@@ -27,7 +27,9 @@ export default function ResponsiveDrawer(props) {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isAuthenticated, userRole } = useSelector((state) => state.auth);
+
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { role: userRole } = user
 
   async function handleLogout() {
     await dispatch(logout());
