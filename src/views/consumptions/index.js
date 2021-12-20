@@ -11,6 +11,7 @@ import {
 import withRole from "../../common/roles/withRole";
 import { Role } from "../../common/roles/role";
 import { PointsOfSaleFilter } from "../../components/consumptions/PointsOfSaleFilter";
+import consumptionsService from "../../services/consumptions.service";
 
 export default function Consumptions() {
   const [selection, setSelection] = useState([]);
@@ -50,6 +51,10 @@ export default function Consumptions() {
 
   const handleUnsubscribe = () => {
     alert("Aquí daríamos de baja a las filas: " + selection);
+    selection.forEach(element => {
+      consumptionsService.deletebyId({userToken,idConsumption:element});
+      console.log("eliminamos element " + element);
+    });
   };
 
   let Filter = () => (
