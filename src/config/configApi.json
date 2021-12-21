@@ -1,7 +1,7 @@
 {
-    "SERVER_URL" : "https://k1c8hx53c3.execute-api.us-east-2.amazonaws.com",
+    "SERVER_URL" : "https://fvbr1cc1w7.execute-api.us-east-2.amazonaws.com",
     "STAGE" : "beta",
-    "API" : "tarjetas-club",
+    "API" : "marina",
     "RESOURCES" : {
         "CONSUMPTIONS" : {
             "ENDPOINT" : "consumption",
@@ -16,3 +16,4 @@
         }
     }
 }
+
