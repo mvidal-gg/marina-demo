@@ -1,5 +1,5 @@
 {
-    "SERVER_URL" : " https://k1c8hx53c3.execute-api.us-east-2.amazonaws.com",
+    "SERVER_URL" : "https://k1c8hx53c3.execute-api.us-east-2.amazonaws.com",
     "STAGE" : "beta",
     "API" : "tarjetas-club",
     "RESOURCES" : {
@@ -9,6 +9,10 @@
                 "PARAMETER1" : "pointSaleId",
                 "PARAMETER2" : "dateConsumption"
             }
+        },
+        "POINTOFSALE" : {
+            "ENDPOINT" : "point-of-sale",
+            "GET" : {}
         }
     }
 }
